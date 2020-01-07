@@ -20,6 +20,8 @@ public class WelcomeScreen {
         this.pin = inPin.nextLine();
 
         this.activeAccount = activeAccount;
+
+        this.login();
     }
 
     public String getAccountNumber() {
