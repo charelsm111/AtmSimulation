@@ -10,45 +10,53 @@ public class ActiveAccount {
         this.accounts = accounts;
     }
 
-    public boolean verifyAccount(String accountNumber, String pin) {
+    public Account getAccount(String accountNumber, String pin) {
         Validation validateAccountNumberLength = validateAccountNumberLength(accountNumber);
         if (validateAccountNumberLength.getIsError()) {
             System.out.println(validateAccountNumberLength.getMessage());
-            return false;
+            return null;
         }
 
         Validation validateAccountNumberIsNumeric = validateAccountNumberIsNumeric(accountNumber);
         if (validateAccountNumberIsNumeric.getIsError()) {
             System.out.println(validateAccountNumberIsNumeric.getMessage());
-            return false;
+            return null;
         }
 
         Validation validatePinLength = validatePinLength(pin);
         if (validatePinLength.getIsError()) {
             System.out.println(validatePinLength.getMessage());
-            return false;
+            return null;
         }
 
         Validation validatePinIsNumeric = validatePinIsNumeric(pin);
         if (validatePinIsNumeric.getIsError()) {
             System.out.println(validatePinIsNumeric.getMessage());
-            return false;
+            return null;
         }
 
         Validation validateAccountExistence = validateAccountExistence(accountNumber, pin);
         if (validateAccountExistence.getIsError()) {
             System.out.println(validateAccountExistence.getMessage());
-            return false;
+            return null;
         }
 
-        return true;
+        Account account = checkAccount(accountNumber, pin);
+
+        return account;
     }
 
-    public Validation validateAccountExistence(String accountNumber, String pin) {
+    public Account checkAccount(String accountNumber, String pin) {
         Account verifiedAccount = accounts.stream()
                 .filter(account -> accountNumber.equals(account.getAccountNumber()) && pin.equals(account.getPin()))
                 .findAny()
                 .orElse(null);
+
+        return verifiedAccount;
+    }
+
+    public Validation validateAccountExistence(String accountNumber, String pin) {
+        Account verifiedAccount = checkAccount(accountNumber, pin);
 
         Validation validation = new Validation();
         if (verifiedAccount == null) {

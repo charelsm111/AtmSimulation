@@ -31,9 +31,9 @@ public class WelcomeScreen {
     }
 
     public void login() {
-        isLoggedIn = activeAccount.verifyAccount(accountNumber, pin);
-        if (isLoggedIn) {
-            System.out.println("Welcome");
+        Account account = activeAccount.getAccount(accountNumber, pin);
+        if (account != null) {
+            TransactionScreen transactionScreen = new TransactionScreen(account);
         }
     }
 
