@@ -10,20 +10,45 @@ public class ActiveAccount {
         this.accounts = accounts;
     }
 
-    public List<Account> getAccounts() {
-        return accounts;
+    public boolean verifyAccount(String accountNumber, String pin) {
+        Validation validateAccountNumberLength = validateAccountNumberLength(accountNumber);
+        if (validateAccountNumberLength.getIsError()) {
+            System.out.println(validateAccountNumberLength.getMessage());
+            return false;
+        }
+
+        Validation validateAccountExistence = validateAccountExistence(accountNumber, pin);
+        if (validateAccountExistence.getIsError()) {
+            System.out.println(validateAccountExistence.getMessage());
+            return false;
+        }
+
+        return true;
     }
 
-    public boolean verifyAccount(String accountNumber, String pin) {
+    public Validation validateAccountExistence(String accountNumber, String pin) {
         Account verifiedAccount = accounts.stream()
                 .filter(account -> accountNumber.equals(account.getAccountNumber()) && pin.equals(account.getPin()))
                 .findAny()
                 .orElse(null);
 
+        Validation validation = new Validation();
         if (verifiedAccount != null) {
-            return true;
+            validation.setIsError(true);
+            validation.setMessage("Account Number should have 6 digits length");
         }
 
-        return false;
+        return validation;
+    }
+
+    public Validation validateAccountNumberLength(String accountNumber) {
+        Validation validation = new Validation();
+
+        if (accountNumber.length() < 6) {
+            validation.setIsError(true);
+            validation.setMessage("Account Number should have 6 digits length");
+        }
+
+        return validation;
     }
 }

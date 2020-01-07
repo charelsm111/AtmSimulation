@@ -34,8 +34,6 @@ public class WelcomeScreen {
         isLoggedIn = activeAccount.verifyAccount(accountNumber, pin);
         if (isLoggedIn) {
             System.out.println("Welcome");
-        } else {
-            System.out.println("Login Failed");
         }
     }
 
