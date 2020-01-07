@@ -17,6 +17,12 @@ public class ActiveAccount {
             return false;
         }
 
+        Validation validateAccountNumberIsNumeric = validateAccountNumberIsNumeric(accountNumber);
+        if (validateAccountNumberIsNumeric.getIsError()) {
+            System.out.println(validateAccountNumberIsNumeric.getMessage());
+            return false;
+        }
+
         Validation validateAccountExistence = validateAccountExistence(accountNumber, pin);
         if (validateAccountExistence.getIsError()) {
             System.out.println(validateAccountExistence.getMessage());
@@ -33,9 +39,9 @@ public class ActiveAccount {
                 .orElse(null);
 
         Validation validation = new Validation();
-        if (verifiedAccount != null) {
+        if (verifiedAccount == null) {
             validation.setIsError(true);
-            validation.setMessage("Account Number should have 6 digits length");
+            validation.setMessage("Invalid Account Number/PIN if records is not exist");
         }
 
         return validation;
@@ -47,6 +53,17 @@ public class ActiveAccount {
         if (accountNumber.length() < 6) {
             validation.setIsError(true);
             validation.setMessage("Account Number should have 6 digits length");
+        }
+
+        return validation;
+    }
+
+    public Validation validateAccountNumberIsNumeric(String accountNumber) {
+        Validation validation = new Validation();
+
+        if (!accountNumber.matches("[0-9]+")) {
+            validation.setIsError(true);
+            validation.setMessage("Account Number should only contains numbers");
         }
 
         return validation;
