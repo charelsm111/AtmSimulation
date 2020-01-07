@@ -21,4 +21,8 @@ public class Account {
     public String getPin() {
         return pin;
     }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
 }
