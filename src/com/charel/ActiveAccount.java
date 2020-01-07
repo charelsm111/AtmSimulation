@@ -1,10 +1,19 @@
 package com.charel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActiveAccount {
 
     private List<Account> accounts;
+
+    public ActiveAccount() {
+        this.accounts = new ArrayList<>();
+        accounts.add(new Account("John Doe", "012108", 100, "112233"));
+        accounts.add(new Account("Jane Doe", "932012", 30, "112244"));
+
+        this.setAccounts(accounts);
+    }
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
