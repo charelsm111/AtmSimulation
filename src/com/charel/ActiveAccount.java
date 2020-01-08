@@ -119,4 +119,13 @@ public class ActiveAccount {
 
         return validation;
     }
+
+    public Account getDestinationAccount(String accountNumber) {
+        Account destinationAccount = accounts.stream()
+                .filter(account -> accountNumber.equals(account.getAccountNumber()))
+                .findAny()
+                .orElse(null);
+
+        return destinationAccount;
+    }
 }
