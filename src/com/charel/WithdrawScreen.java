@@ -34,7 +34,8 @@ public class WithdrawScreen {
                         summaryScreen.show();
                     }
                 case "4":
-                    // TODO: Go to Other Transaction Screen
+                    OtherWithdrawScreen otherWithdrawScreen = new OtherWithdrawScreen(this.account);
+                    otherWithdrawScreen.show();
                     break;
                 case "5":
                     transactionScreen.show();
