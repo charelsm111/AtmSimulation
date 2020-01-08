@@ -2,6 +2,7 @@ package com.charel;
 
 import java.util.Scanner;
 
+// TODO: Should be have a Super Class
 public class TransactionScreen {
 
     private Account account;
@@ -23,7 +24,8 @@ public class TransactionScreen {
                     withdrawScreen.show();
                     break;
                 case "2":
-                    System.out.println("Machine stopped.");
+                    FundTransferScreen fundTransferScreen = new FundTransferScreen(this.account);
+                    fundTransferScreen.show();
                     break;
                 case "3":
                     WelcomeScreen welcomeScreen = new WelcomeScreen();

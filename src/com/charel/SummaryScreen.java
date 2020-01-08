@@ -2,6 +2,7 @@ package com.charel;
 
 import java.util.Scanner;
 
+// TODO: Should be have a Super Class
 public class SummaryScreen {
 
     private Account account;
