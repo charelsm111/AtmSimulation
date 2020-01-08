@@ -1,6 +1,5 @@
 package com.charel;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class WelcomeScreen {
@@ -8,9 +7,8 @@ public class WelcomeScreen {
     private String accountNumber;
     private String pin;
     private ActiveAccount activeAccount;
-    private boolean isLoggedIn;
 
-    public WelcomeScreen(ActiveAccount activeAccount) {
+    public void show() {
         Scanner inAccountNumber = new Scanner(System.in);
         System.out.print("Enter Account Number: ");
         this.accountNumber = inAccountNumber.nextLine();
@@ -19,27 +17,18 @@ public class WelcomeScreen {
         System.out.print("Enter PIN: ");
         this.pin = inPin.nextLine();
 
-        this.activeAccount = activeAccount;
+        this.activeAccount = new ActiveAccount();
 
         this.login();
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public String getPin() {
-        return pin;
     }
 
     public void login() {
         Account account = activeAccount.getAccount(accountNumber, pin);
         if (account != null) {
             TransactionScreen transactionScreen = new TransactionScreen(account);
+        } else {
+            this.show();
         }
     }
 
-    public boolean getIsLoggedIn() {
-        return isLoggedIn;
-    }
 }

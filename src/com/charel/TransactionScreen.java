@@ -25,8 +25,8 @@ public class TransactionScreen {
                     System.out.println("Machine stopped.");
                     break;
                 case "3":
-                    ActiveAccount activeAccount = new ActiveAccount();
-                    WelcomeScreen welcomeScreen = new WelcomeScreen(activeAccount);
+                    WelcomeScreen welcomeScreen = new WelcomeScreen();
+                    welcomeScreen.show();
                     running = false;
                     break;
                 default:
