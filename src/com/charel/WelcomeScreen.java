@@ -26,6 +26,7 @@ public class WelcomeScreen {
         Account account = activeAccount.getAccount(accountNumber, pin);
         if (account != null) {
             TransactionScreen transactionScreen = new TransactionScreen(account);
+            transactionScreen.show();
         } else {
             this.show();
         }

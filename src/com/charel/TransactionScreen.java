@@ -5,21 +5,22 @@ import java.util.Scanner;
 public class TransactionScreen {
 
     private Account account;
+    private String choice;
 
     public TransactionScreen(Account account) {
         this.account = account;
+    }
+
+    public void show() {
         boolean running = true;
 
         while(running){
-            System.out.println("1. Witdraw");
-            System.out.println("2. Fund Transfer");
-            System.out.println("3. Exit");
-            System.out.print("Please choose option[3]: ");
-            Scanner choice = new Scanner(System.in);
+            this.showMenu();
 
-            switch(choice.nextLine()){
+            switch(this.choice){
                 case "1":
-                    System.out.println("Machine started!");
+                    WithdrawScreen withdrawScreen = new WithdrawScreen(this.account);
+                    withdrawScreen.show();
                     break;
                 case "2":
                     System.out.println("Machine stopped.");
@@ -30,9 +31,19 @@ public class TransactionScreen {
                     running = false;
                     break;
                 default:
-                    System.out.println("Command not recognized!");
+                    this.showMenu();
                     break;
             }
         }
     }
+
+    public void showMenu() {
+        System.out.println("1. Witdraw");
+        System.out.println("2. Fund Transfer");
+        System.out.println("3. Exit");
+        System.out.print("Please choose option[3]: ");
+        Scanner in = new Scanner(System.in);
+        this.choice = in.nextLine();
+    }
+
 }
