@@ -9,8 +9,20 @@ public class ActiveAccount {
 
     public ActiveAccount() {
         this.accounts = new ArrayList<>();
-        accounts.add(new Account("John Doe", "012108", 100, "112233"));
-        accounts.add(new Account("Jane Doe", "932012", 30, "112244"));
+
+        Account account1 = new Account();
+        account1.setName("John Doe");
+        account1.setPin("012108");
+        account1.setBalance(100);
+        account1.setAccountNumber("112233");
+        accounts.add(account1);
+
+        Account account2 = new Account();
+        account2.setName("Jane Doe");
+        account2.setPin("932012");
+        account2.setBalance(30);
+        account2.setAccountNumber("112244");
+        accounts.add(account2);
 
         this.setAccounts(accounts);
     }
