@@ -1,50 +1,49 @@
-package com.charel;
+package com.app;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 import java.util.Scanner;
 
-public class Screen {
+class Screen {
 
     private Account account;
     private String choice;
     private ActiveAccount activeAccount;
     private Account destinationAccount;
 
-    public void setAccount(Account account) {
+    void setAccount(Account account) {
         this.account = account;
     }
 
-    public Account getAccount() {
+    private Account getAccount() {
         return this.account;
     }
 
-    public void setActiveAccount(ActiveAccount activeAccount) {
+    void setActiveAccount(ActiveAccount activeAccount) {
         this.activeAccount = activeAccount;
     }
 
-    public ActiveAccount getActiveAccount() {
+    private ActiveAccount getActiveAccount() {
         return this.activeAccount;
     }
 
-    public void setChoice(String choice) {
+    private void setChoice(String choice) {
         this.choice = choice;
     }
 
-    public String getChoice() {
+    private String getChoice() {
         return this.choice;
     }
 
-    public void setDestinationAccount(Account destinationAccount) {
+    private void setDestinationAccount(Account destinationAccount) {
         this.destinationAccount = destinationAccount;
     }
 
-    public Account getDestinationAccount() {
+    private Account getDestinationAccount() {
         return this.destinationAccount;
     }
 
-    public void showWelcomeScreen() {
+    void showWelcomeScreen() {
         Scanner inAccountNumber = new Scanner(System.in);
         System.out.print("Enter Account Number: ");
         this.getAccount().setAccountNumber(inAccountNumber.nextLine());
@@ -56,7 +55,7 @@ public class Screen {
         this.login();
     }
 
-    public void login() {
+    private void login() {
         Account account = activeAccount.getAccount(this.getAccount().getAccountNumber(), this.getAccount().getPin());
         if (account != null) {
             this.setAccount(account);
@@ -66,7 +65,7 @@ public class Screen {
         }
     }
 
-    public void showTransactionScreen() {
+    private void showTransactionScreen() {
         boolean running = true;
 
         while(running){
@@ -90,7 +89,7 @@ public class Screen {
         }
     }
 
-    public void showTransactionMenu() {
+    private void showTransactionMenu() {
         System.out.println("1. Withdraw");
         System.out.println("2. Fund Transfer");
         System.out.println("3. Exit");
@@ -99,7 +98,7 @@ public class Screen {
         this.setChoice(in.nextLine());
     }
 
-    public void showWithdrawScreen() {
+    private void showWithdrawScreen() {
         boolean running = true;
 
         while(running){
@@ -134,7 +133,7 @@ public class Screen {
         }
     }
 
-    public void showWithdrawMenu() {
+    private void showWithdrawMenu() {
         System.out.println("1. $10");
         System.out.println("2. $50");
         System.out.println("3. $100");
@@ -145,7 +144,7 @@ public class Screen {
         this.setChoice(in.nextLine());
     }
 
-    public void showSummaryScreen() {
+    private void showSummaryScreen() {
         boolean running = true;
 
         while(running){
@@ -167,7 +166,7 @@ public class Screen {
         }
     }
 
-    public void showSummaryMenu() {
+    private void showSummaryMenu() {
         System.out.println("1. Transaction");
         System.out.println("2. Exit");
         System.out.print("Please choose option[2]: ");
@@ -175,7 +174,7 @@ public class Screen {
         this.setChoice(in.nextLine());
     }
 
-    public void showSummary() {
+    private void showSummary() {
         LocalDateTime localDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
@@ -184,10 +183,10 @@ public class Screen {
         System.out.printf("Date: %s\n", formattedDateTime);
         System.out.printf("Withdraw: %d\n", this.getAccount().getWithdrawal());
         System.out.printf("Balance: %d\n", this.getAccount().getBalance());
-        System.out.println("");
+        System.out.println();
     }
 
-    public void showOtherWithdrawScreen() {
+    private void showOtherWithdrawScreen() {
         System.out.println("Other Withdraw");
         System.out.print("Enter Amount to Withdraw: ");
         Scanner in = new Scanner(System.in);
@@ -198,7 +197,7 @@ public class Screen {
         }
     }
 
-    public void showFundTransferScreen1() {
+    private void showFundTransferScreen1() {
         Scanner in = new Scanner(System.in);
         System.out.print("Please enter destination account and press enter to continue or \n" +
                 "press enter to go back to Transaction: ");
@@ -212,7 +211,7 @@ public class Screen {
         }
     }
 
-    public void showFundTransferScreen2() {
+    private void showFundTransferScreen2() {
         Scanner in = new Scanner(System.in);
         System.out.print("Please enter transfer amount and \n" +
                 "press enter to continue or \n" +
@@ -220,7 +219,7 @@ public class Screen {
 
         String amount = in.nextLine();
 
-        while (amount.equals("") == false) {
+        while (amount.equals("")) {
             // TODO: It should be static method
             Validation validateTransferAmountIsNumeric = this.getAccount().validateTransferAmountIsNumeric(amount);
             if (validateTransferAmountIsNumeric.getIsError()) {
@@ -256,18 +255,16 @@ public class Screen {
         this.showTransactionScreen();
     }
 
-    public void showFundTransferScreen3() {
-        Scanner in = new Scanner(System.in);
+    private void showFundTransferScreen3() {
         this.getAccount().setReferenceNumber(this.getAccount().generateReferenceNumber());
 
         System.out.printf("Reference Number: %s\n" +
                 "press enter to continue ", this.getAccount().getReferenceNumber());
 
-        String answer = in.nextLine();
         this.showFundTransferScreen4();
     }
 
-    public void showFundTransferScreen4() {
+    private void showFundTransferScreen4() {
         System.out.println("Transfer Confirmation");
         System.out.printf("Destination Account : %s\n", this.getDestinationAccount().getAccountNumber());
         System.out.printf("Transfer Amount : %d\n", this.getAccount().getTransferAmount());
@@ -279,21 +276,15 @@ public class Screen {
         Scanner in = new Scanner(System.in);
         this.setChoice(in.nextLine());
 
-        switch(this.getChoice()){
-            case "1":
-                this.getAccount().transferFund(this.getDestinationAccount());
-                this.showFundTransferSummaryScreen();
-                break;
-            case "2":
-                this.showTransactionScreen();
-                break;
-            default:
-                this.showTransactionScreen();
-                break;
+        if ("1".equals(this.getChoice())) {
+            this.getAccount().transferFund(this.getDestinationAccount());
+            this.showFundTransferSummaryScreen();
+        } else {
+            this.showTransactionScreen();
         }
     }
 
-    public void showFundTransferSummaryScreen() {
+    private void showFundTransferSummaryScreen() {
         System.out.println("Fund Transfer Summary");
         System.out.printf("Destination Account : %s\n", this.getDestinationAccount().getAccountNumber());
         System.out.printf("Transfer Amount : %d\n", this.getAccount().getTransferAmount());
@@ -306,16 +297,10 @@ public class Screen {
         Scanner in = new Scanner(System.in);
         this.setChoice(in.nextLine());
 
-        switch(this.getChoice()){
-            case "1":
-                this.showTransactionScreen();
-                break;
-            case "2":
-                this.showWelcomeScreen();
-                break;
-            default:
-                this.showTransactionScreen();
-                break;
+        if ("2".equals(this.getChoice())) {
+            this.showWelcomeScreen();
+        } else {
+            this.showTransactionScreen();
         }
     }
 

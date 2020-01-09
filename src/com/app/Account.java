@@ -1,8 +1,15 @@
-package com.charel;
+package com.app;
 
 import java.util.Random;
 
-public class Account {
+class Account {
+
+    private static final Integer DECREASE_TEN = 10;
+    private static final Integer DECREASE_FIFTY = 50;
+    private static final Integer DECREASE_HUNDRED = 100;
+    private static final Integer MAX_WITHDRAWAL_AMOUNT = 1000;
+    private static final Integer MAX_TRANSFER_AMOUNT = 1000;
+    private static final Integer MIN_TRANSFER_AMOUNT = 1;
 
     private String name;
     private String pin;
@@ -12,62 +19,55 @@ public class Account {
     private Integer transferAmount;
     private String referenceNumber;
 
-    final Integer DECREASE_TEN = 10;
-    final Integer DECREASE_FIFTY = 50;
-    final Integer DECREASE_HUNDRED = 100;
-    final Integer MAX_WITHDRAWAL_AMOUNT = 1000;
-    final Integer MAX_TRANSFER_AMOUNT = 1000;
-    final Integer MIN_TRANSFER_AMOUNT = 1;
-
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void setPin(String pin) {
+    void setPin(String pin) {
         this.pin = pin;
     }
 
-    public String getPin() {
+    String getPin() {
         return pin;
     }
 
-    public void setAccountNumber(String accountNumber) {
+    void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    public String getAccountNumber() {
+    String getAccountNumber() {
         return accountNumber;
     }
 
-    public void setBalance(Integer balance) {
+    void setBalance(Integer balance) {
         this.balance = balance;
     }
 
-    public Integer getBalance() { return balance; }
+    Integer getBalance() { return balance; }
 
-    public void setTransferAmount(Integer transferAmount) {
+    void setTransferAmount(Integer transferAmount) {
         this.transferAmount = transferAmount;
     }
 
-    public Integer getTransferAmount() {
+    Integer getTransferAmount() {
         return this.transferAmount;
     }
 
-    public void setReferenceNumber(String referenceNumber) {
+    void setReferenceNumber(String referenceNumber) {
         this.referenceNumber = referenceNumber;
     }
 
-    public String getReferenceNumber() {
+    String getReferenceNumber() {
         return this.referenceNumber;
     }
 
-    public Integer getWithdrawal() { return withdrawal; }
+    Integer getWithdrawal() { return withdrawal; }
 
-    public boolean decreaseBalanceByTen() {
+    boolean decreaseBalanceByTen() {
         Validation validateRemainingBalance = this.validateRemainingBalance(DECREASE_TEN);
         if (validateRemainingBalance.getIsError()) {
             System.out.println(validateRemainingBalance.getMessage());
@@ -79,7 +79,7 @@ public class Account {
         return true;
     }
 
-    public boolean decreaseBalanceByFifty() {
+    boolean decreaseBalanceByFifty() {
         Validation validateRemainingBalance = this.validateRemainingBalance(DECREASE_FIFTY);
         if (validateRemainingBalance.getIsError()) {
             System.out.println(validateRemainingBalance.getMessage());
@@ -91,7 +91,7 @@ public class Account {
         return true;
     }
 
-    public boolean decreaseBalanceByHundred() {
+    boolean decreaseBalanceByHundred() {
         Validation validateRemainingBalance = this.validateRemainingBalance(DECREASE_HUNDRED);
         if (validateRemainingBalance.getIsError()) {
             System.out.println(validateRemainingBalance.getMessage());
@@ -103,7 +103,7 @@ public class Account {
         return true;
     }
 
-    public boolean decreaseBalance(String amount) {
+    boolean decreaseBalance(String amount) {
         Validation validateWithdrawAmountIsNumeric = this.validateWithdrawAmountIsNumeric(amount);
         if (validateWithdrawAmountIsNumeric.getIsError()) {
             System.out.println(validateWithdrawAmountIsNumeric.getMessage());
@@ -134,7 +134,7 @@ public class Account {
         return true;
     }
 
-    public Validation validateRemainingBalance(Integer amount) {
+    Validation validateRemainingBalance(Integer amount) {
         Validation validation = new Validation();
         if (this.balance < amount) {
             validation.setIsError(true);
@@ -144,7 +144,7 @@ public class Account {
         return validation;
     }
 
-    public Validation validateMaximumWithdraw() {
+    private Validation validateMaximumWithdraw() {
         Validation validation = new Validation();
         if (this.balance > MAX_WITHDRAWAL_AMOUNT) {
             validation.setIsError(true);
@@ -154,7 +154,8 @@ public class Account {
         return validation;
     }
 
-    public Validation validateWithdrawAmountIsNumeric(String amount) {
+
+    private Validation validateWithdrawAmountIsNumeric(String amount) {
         Validation validation = new Validation();
         if (!amount.matches("[0-9]+")) {
             validation.setIsError(true);
@@ -164,7 +165,8 @@ public class Account {
         return validation;
     }
 
-    public Validation validateWithdrawAmountIsTenMultiply(Integer amount) {
+
+    private Validation validateWithdrawAmountIsTenMultiply(Integer amount) {
         Validation validation = new Validation();
         if (amount % 10 != 0) {
             validation.setIsError(true);
@@ -174,7 +176,7 @@ public class Account {
         return validation;
     }
 
-    public Validation validateMaximumTransfer() {
+    Validation validateMaximumTransfer() {
         Validation validation = new Validation();
         if (this.getTransferAmount() > MAX_TRANSFER_AMOUNT) {
             validation.setIsError(true);
@@ -184,7 +186,7 @@ public class Account {
         return validation;
     }
 
-    public Validation validateMinimumTransfer() {
+    Validation validateMinimumTransfer() {
         Validation validation = new Validation();
         if (this.getTransferAmount() < MIN_TRANSFER_AMOUNT) {
             validation.setIsError(true);
@@ -194,7 +196,7 @@ public class Account {
         return validation;
     }
 
-    public Validation validateTransferAmountIsNumeric(String amount) {
+    Validation validateTransferAmountIsNumeric(String amount) {
         Validation validation = new Validation();
         if (!amount.matches("[0-9]+")) {
             validation.setIsError(true);
@@ -204,7 +206,7 @@ public class Account {
         return validation;
     }
 
-    public String generateReferenceNumber() {
+    String generateReferenceNumber() {
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
 
@@ -212,7 +214,7 @@ public class Account {
         return String.format("%06d", number);
     }
 
-    public void transferFund(Account destinationAccount) {
+    void transferFund(Account destinationAccount) {
         destinationAccount.balance = destinationAccount.balance + this.transferAmount;
         this.balance = this.balance - this.transferAmount;
     }

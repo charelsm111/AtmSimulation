@@ -1,13 +1,13 @@
-package com.charel;
+package com.app;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActiveAccount {
+class ActiveAccount {
 
     private List<Account> accounts;
 
-    public ActiveAccount() {
+    ActiveAccount() {
         this.accounts = new ArrayList<>();
 
         Account account1 = new Account();
@@ -27,11 +27,11 @@ public class ActiveAccount {
         this.setAccounts(accounts);
     }
 
-    public void setAccounts(List<Account> accounts) {
+    private void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
 
-    public Account getAccount(String accountNumber, String pin) {
+    Account getAccount(String accountNumber, String pin) {
         Validation validateAccountNumberLength = validateAccountNumberLength(accountNumber);
         if (validateAccountNumberLength.getIsError()) {
             System.out.println(validateAccountNumberLength.getMessage());
@@ -62,21 +62,18 @@ public class ActiveAccount {
             return null;
         }
 
-        Account account = checkAccount(accountNumber, pin);
-
-        return account;
+        return checkAccount(accountNumber, pin);
     }
 
-    public Account checkAccount(String accountNumber, String pin) {
-        Account verifiedAccount = accounts.stream()
+    private Account checkAccount(String accountNumber, String pin) {
+
+        return accounts.stream()
                 .filter(account -> accountNumber.equals(account.getAccountNumber()) && pin.equals(account.getPin()))
                 .findAny()
                 .orElse(null);
-
-        return verifiedAccount;
     }
 
-    public Validation validateAccountExistence(String accountNumber, String pin) {
+    private Validation validateAccountExistence(String accountNumber, String pin) {
         Account verifiedAccount = checkAccount(accountNumber, pin);
 
         Validation validation = new Validation();
@@ -88,7 +85,7 @@ public class ActiveAccount {
         return validation;
     }
 
-    public Validation validateAccountNumberLength(String accountNumber) {
+    private Validation validateAccountNumberLength(String accountNumber) {
         Validation validation = new Validation();
 
         if (accountNumber.length() < 6) {
@@ -99,7 +96,7 @@ public class ActiveAccount {
         return validation;
     }
 
-    public Validation validateAccountNumberIsNumeric(String accountNumber) {
+    private Validation validateAccountNumberIsNumeric(String accountNumber) {
         Validation validation = new Validation();
 
         if (!accountNumber.matches("[0-9]+")) {
@@ -110,7 +107,7 @@ public class ActiveAccount {
         return validation;
     }
 
-    public Validation validatePinLength(String pin) {
+    private Validation validatePinLength(String pin) {
         Validation validation = new Validation();
 
         if (pin.length() < 6) {
@@ -121,7 +118,7 @@ public class ActiveAccount {
         return validation;
     }
 
-    public Validation validatePinIsNumeric(String pin) {
+    private Validation validatePinIsNumeric(String pin) {
         Validation validation = new Validation();
 
         if (!pin.matches("[0-9]+")) {
@@ -132,7 +129,7 @@ public class ActiveAccount {
         return validation;
     }
 
-    public Account getDestinationAccount(String accountNumber) {
+    Account getDestinationAccount(String accountNumber) {
         Validation validateAccountNumberIsNumeric = validateAccountNumberIsNumeric(accountNumber);
         if (validateAccountNumberIsNumeric.getIsError()) {
             System.out.println(validateAccountNumberIsNumeric.getMessage());
@@ -145,12 +142,10 @@ public class ActiveAccount {
             return null;
         }
 
-        Account destinationAccount = this.getAccountByAccountNumber(accountNumber);
-
-        return destinationAccount;
+        return this.getAccountByAccountNumber(accountNumber);
     }
 
-    public Validation validateDestinationAccountNumber(String accountNumber) {
+    private Validation validateDestinationAccountNumber(String accountNumber) {
         Account verifiedAccount = getAccountByAccountNumber(accountNumber);
 
         Validation validation = new Validation();
@@ -162,12 +157,11 @@ public class ActiveAccount {
         return validation;
     }
 
-    public Account getAccountByAccountNumber(String accountNumber) {
-        Account account = accounts.stream()
+    private Account getAccountByAccountNumber(String accountNumber) {
+
+        return accounts.stream()
                 .filter(acc -> accountNumber.equals(acc.getAccountNumber()))
                 .findAny()
                 .orElse(null);
-
-        return account;
     }
 }
