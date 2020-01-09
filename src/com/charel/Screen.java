@@ -1,5 +1,7 @@
 package com.charel;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -174,9 +176,12 @@ public class Screen {
     }
 
     public void showSummary() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+
         System.out.println("Summary");
-        // TODO: Add date API
-        System.out.printf("Date: \n");
+        System.out.printf("Date: %s\n", formattedDateTime);
         System.out.printf("Withdraw: %d\n", this.getAccount().getWithdrawal());
         System.out.printf("Balance: %d\n", this.getAccount().getBalance());
         System.out.println("");
