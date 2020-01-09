@@ -133,11 +133,41 @@ public class ActiveAccount {
     }
 
     public Account getDestinationAccount(String accountNumber) {
-        Account destinationAccount = accounts.stream()
-                .filter(account -> accountNumber.equals(account.getAccountNumber()))
+        Validation validateAccountNumberIsNumeric = validateAccountNumberIsNumeric(accountNumber);
+        if (validateAccountNumberIsNumeric.getIsError()) {
+            System.out.println(validateAccountNumberIsNumeric.getMessage());
+            return null;
+        }
+
+        Validation validateDestinationAccountNumber = this.validateDestinationAccountNumber(accountNumber);
+        if (validateDestinationAccountNumber.getIsError()) {
+            System.out.println(validateDestinationAccountNumber.getMessage());
+            return null;
+        }
+
+        Account destinationAccount = this.getAccountByAccountNumber(accountNumber);
+
+        return destinationAccount;
+    }
+
+    public Validation validateDestinationAccountNumber(String accountNumber) {
+        Account verifiedAccount = getAccountByAccountNumber(accountNumber);
+
+        Validation validation = new Validation();
+        if (verifiedAccount == null) {
+            validation.setIsError(true);
+            validation.setMessage("Invalid account");
+        }
+
+        return validation;
+    }
+
+    public Account getAccountByAccountNumber(String accountNumber) {
+        Account account = accounts.stream()
+                .filter(acc -> accountNumber.equals(acc.getAccountNumber()))
                 .findAny()
                 .orElse(null);
 
-        return destinationAccount;
+        return account;
     }
 }

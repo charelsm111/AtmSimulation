@@ -1,5 +1,7 @@
 package com.charel;
 
+import java.util.Random;
+
 public class Account {
 
     private String name;
@@ -7,11 +9,15 @@ public class Account {
     private Integer balance;
     private String accountNumber;
     private Integer withdrawal;
+    private Integer transferAmount;
+    private String referenceNumber;
 
     final Integer DECREASE_TEN = 10;
     final Integer DECREASE_FIFTY = 50;
     final Integer DECREASE_HUNDRED = 100;
     final Integer MAX_WITHDRAWAL_AMOUNT = 1000;
+    final Integer MAX_TRANSFER_AMOUNT = 1000;
+    final Integer MIN_TRANSFER_AMOUNT = 1;
 
     public void setName(String name) {
         this.name = name;
@@ -42,6 +48,22 @@ public class Account {
     }
 
     public Integer getBalance() { return balance; }
+
+    public void setTransferAmount(Integer transferAmount) {
+        this.transferAmount = transferAmount;
+    }
+
+    public Integer getTransferAmount() {
+        return this.transferAmount;
+    }
+
+    public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+    }
+
+    public String getReferenceNumber() {
+        return this.referenceNumber;
+    }
 
     public Integer getWithdrawal() { return withdrawal; }
 
@@ -116,7 +138,7 @@ public class Account {
         Validation validation = new Validation();
         if (this.balance < amount) {
             validation.setIsError(true);
-            validation.setMessage("Insufficient Balance " + amount);
+            validation.setMessage("Insufficient Balance $" + amount);
         }
 
         return validation;
@@ -150,6 +172,49 @@ public class Account {
         }
 
         return validation;
+    }
+
+    public Validation validateMaximumTransfer() {
+        Validation validation = new Validation();
+        if (this.getTransferAmount() > MAX_TRANSFER_AMOUNT) {
+            validation.setIsError(true);
+            validation.setMessage("Maximum amount to withdraw is $" + MAX_TRANSFER_AMOUNT);
+        }
+
+        return validation;
+    }
+
+    public Validation validateMinimumTransfer() {
+        Validation validation = new Validation();
+        if (this.getTransferAmount() < MIN_TRANSFER_AMOUNT) {
+            validation.setIsError(true);
+            validation.setMessage("Minimum amount to withdraw is $" + MIN_TRANSFER_AMOUNT);
+        }
+
+        return validation;
+    }
+
+    public Validation validateTransferAmountIsNumeric(String amount) {
+        Validation validation = new Validation();
+        if (!amount.matches("[0-9]+")) {
+            validation.setIsError(true);
+            validation.setMessage("Invalid amount");
+        }
+
+        return validation;
+    }
+
+    public String generateReferenceNumber() {
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+
+        // this will convert any number sequence into 6 character.
+        return String.format("%06d", number);
+    }
+
+    public void transferFund(Account destinationAccount) {
+        destinationAccount.balance = destinationAccount.balance + this.transferAmount;
+        this.balance = this.balance - this.transferAmount;
     }
 
 

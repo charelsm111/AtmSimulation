@@ -1,5 +1,6 @@
 package com.charel;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Screen {
@@ -7,6 +8,7 @@ public class Screen {
     private Account account;
     private String choice;
     private ActiveAccount activeAccount;
+    private Account destinationAccount;
 
     public void setAccount(Account account) {
         this.account = account;
@@ -30,6 +32,14 @@ public class Screen {
 
     public String getChoice() {
         return this.choice;
+    }
+
+    public void setDestinationAccount(Account destinationAccount) {
+        this.destinationAccount = destinationAccount;
+    }
+
+    public Account getDestinationAccount() {
+        return this.destinationAccount;
     }
 
     public void showWelcomeScreen() {
@@ -65,6 +75,7 @@ public class Screen {
                     this.showWithdrawScreen();
                     break;
                 case "2":
+                    this.showFundTransferScreen1();
                     break;
                 case "3":
                     this.showWelcomeScreen();
@@ -148,7 +159,7 @@ public class Screen {
                     running = false;
                     break;
                 default:
-                    this.showTransactionScreen();
+                    this.showFundTransferScreen1();
                     break;
             }
         }
@@ -182,9 +193,125 @@ public class Screen {
         }
     }
 
-    public void showFundTransferScreen() {
+    public void showFundTransferScreen1() {
+        Scanner in = new Scanner(System.in);
+        System.out.print("Please enter destination account and press enter to continue or \n" +
+                "press enter to go back to Transaction: ");
 
+        Account account = this.getActiveAccount().getDestinationAccount(in.nextLine());
+        if (account != null) {
+            this.setDestinationAccount(account);
+            this.showFundTransferScreen2();
+        } else {
+            this.showTransactionScreen();
+        }
     }
 
+    public void showFundTransferScreen2() {
+        Scanner in = new Scanner(System.in);
+        System.out.print("Please enter transfer amount and \n" +
+                "press enter to continue or \n" +
+                "press enter to go back to Transaction: ");
+
+        String amount = in.nextLine();
+
+        while (amount.equals("") == false) {
+            // TODO: It should be static method
+            Validation validateTransferAmountIsNumeric = this.getAccount().validateTransferAmountIsNumeric(amount);
+            if (validateTransferAmountIsNumeric.getIsError()) {
+                System.out.println(validateTransferAmountIsNumeric.getMessage());
+                this.showTransactionScreen();
+            }
+
+            Integer iAmount = Integer.parseInt(amount);
+            this.getAccount().setTransferAmount(iAmount);
+
+            Validation validateMaximumTransfer = this.getAccount().validateMaximumTransfer();
+            if (validateMaximumTransfer.getIsError()) {
+                System.out.println(validateMaximumTransfer.getMessage());
+                this.showTransactionScreen();
+            }
+
+            Validation validateMinimumTransfer = this.getAccount().validateMinimumTransfer();
+            if (validateMinimumTransfer.getIsError()) {
+                System.out.println(validateMinimumTransfer.getMessage());
+                this.showTransactionScreen();
+            }
+
+            Validation validateRemainingBalance = this.getAccount().validateRemainingBalance(iAmount);
+            if (validateRemainingBalance.getIsError()) {
+                System.out.println(validateRemainingBalance.getMessage());
+                this.showTransactionScreen();
+            }
+
+            this.showFundTransferScreen3();
+            amount = "exit";
+        }
+
+        this.showTransactionScreen();
+    }
+
+    public void showFundTransferScreen3() {
+        Scanner in = new Scanner(System.in);
+        this.getAccount().setReferenceNumber(this.getAccount().generateReferenceNumber());
+
+        System.out.printf("Reference Number: %s\n" +
+                "press enter to continue ", this.getAccount().getReferenceNumber());
+
+        String answer = in.nextLine();
+        this.showFundTransferScreen4();
+    }
+
+    public void showFundTransferScreen4() {
+        System.out.println("Transfer Confirmation");
+        System.out.printf("Destination Account : %s\n", this.getDestinationAccount().getAccountNumber());
+        System.out.printf("Transfer Amount : %d\n", this.getAccount().getTransferAmount());
+        System.out.printf("Reference Number : %s\n\n", this.getAccount().getReferenceNumber());
+
+        System.out.println("1. Confirm Trx");
+        System.out.println("2. Cancel Trx");
+        System.out.print("Choose option[2]: ");
+        Scanner in = new Scanner(System.in);
+        this.setChoice(in.nextLine());
+
+        switch(this.getChoice()){
+            case "1":
+                this.getAccount().transferFund(this.getDestinationAccount());
+                this.showFundTransferSummaryScreen();
+                break;
+            case "2":
+                this.showTransactionScreen();
+                break;
+            default:
+                this.showTransactionScreen();
+                break;
+        }
+    }
+
+    public void showFundTransferSummaryScreen() {
+        System.out.println("Fund Transfer Summary");
+        System.out.printf("Destination Account : %s\n", this.getDestinationAccount().getAccountNumber());
+        System.out.printf("Transfer Amount : %d\n", this.getAccount().getTransferAmount());
+        System.out.printf("Reference Number : %s\n", this.getAccount().getReferenceNumber());
+        System.out.printf("Balance : %s\n\n", this.getAccount().getBalance());
+
+        System.out.println("1. Transaction");
+        System.out.println("2. Exit");
+        System.out.print("Choose option[2]: ");
+        Scanner in = new Scanner(System.in);
+        this.setChoice(in.nextLine());
+
+        switch(this.getChoice()){
+            case "1":
+                this.showTransactionScreen();
+                break;
+            case "2":
+                this.showWelcomeScreen();
+                break;
+            default:
+                this.showTransactionScreen();
+                break;
+        }
+    }
 
 }
