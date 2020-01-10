@@ -220,7 +220,6 @@ class Screen {
         String amount = in.nextLine();
 
         while (!amount.equals("")) {
-            // TODO: It should be static method
             Validation validateTransferAmountIsNumeric = this.getAccount().validateTransferAmountIsNumeric(amount);
             if (validateTransferAmountIsNumeric.getIsError()) {
                 System.out.println(validateTransferAmountIsNumeric.getMessage());

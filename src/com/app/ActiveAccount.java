@@ -3,6 +3,9 @@ package com.app;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+*   Class to storing and fetching the active member
+ */
 class ActiveAccount {
 
     private List<Account> accounts;

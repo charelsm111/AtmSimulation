@@ -1,5 +1,8 @@
 package com.app;
 
+/*
+*   A class to handle error message
+ */
 class Validation {
 
     private boolean isError = false;
