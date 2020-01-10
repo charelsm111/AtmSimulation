@@ -137,7 +137,7 @@ class Account {
     Validation validateRemainingBalance(Integer amount) {
         Validation validation = new Validation();
         if (this.balance < amount) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Insufficient Balance $" + amount);
         }
 
@@ -147,7 +147,7 @@ class Account {
     private Validation validateMaximumWithdraw() {
         Validation validation = new Validation();
         if (this.balance > MAX_WITHDRAWAL_AMOUNT) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Maximum amount to withdraw is $" + MAX_WITHDRAWAL_AMOUNT);
         }
 
@@ -158,7 +158,7 @@ class Account {
     private Validation validateWithdrawAmountIsNumeric(String amount) {
         Validation validation = new Validation();
         if (!amount.matches("[0-9]+")) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Invalid amount");
         }
 
@@ -169,7 +169,7 @@ class Account {
     private Validation validateWithdrawAmountIsTenMultiply(Integer amount) {
         Validation validation = new Validation();
         if (amount % 10 != 0) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Invalid amount");
         }
 
@@ -179,7 +179,7 @@ class Account {
     Validation validateMaximumTransfer() {
         Validation validation = new Validation();
         if (this.getTransferAmount() > MAX_TRANSFER_AMOUNT) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Maximum amount to withdraw is $" + MAX_TRANSFER_AMOUNT);
         }
 
@@ -189,7 +189,7 @@ class Account {
     Validation validateMinimumTransfer() {
         Validation validation = new Validation();
         if (this.getTransferAmount() < MIN_TRANSFER_AMOUNT) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Minimum amount to withdraw is $" + MIN_TRANSFER_AMOUNT);
         }
 
@@ -199,7 +199,7 @@ class Account {
     Validation validateTransferAmountIsNumeric(String amount) {
         Validation validation = new Validation();
         if (!amount.matches("[0-9]+")) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Invalid amount");
         }
 

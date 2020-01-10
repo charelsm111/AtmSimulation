@@ -78,7 +78,7 @@ class ActiveAccount {
 
         Validation validation = new Validation();
         if (verifiedAccount == null) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Invalid Account Number/PIN if records is not exist");
         }
 
@@ -89,7 +89,7 @@ class ActiveAccount {
         Validation validation = new Validation();
 
         if (accountNumber.length() < 6) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Account Number should have 6 digits length");
         }
 
@@ -100,7 +100,7 @@ class ActiveAccount {
         Validation validation = new Validation();
 
         if (!accountNumber.matches("[0-9]+")) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Account Number should only contains numbers");
         }
 
@@ -111,7 +111,7 @@ class ActiveAccount {
         Validation validation = new Validation();
 
         if (pin.length() < 6) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("PIN should have 6 digits length");
         }
 
@@ -122,7 +122,7 @@ class ActiveAccount {
         Validation validation = new Validation();
 
         if (!pin.matches("[0-9]+")) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("PIN should only contains numbers");
         }
 
@@ -150,7 +150,7 @@ class ActiveAccount {
 
         Validation validation = new Validation();
         if (verifiedAccount == null) {
-            validation.setIsError(true);
+            validation.setIsError();
             validation.setMessage("Invalid account");
         }
 
