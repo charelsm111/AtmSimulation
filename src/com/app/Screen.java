@@ -266,7 +266,12 @@ class Screen {
         System.out.print("Please enter destination account and press enter to continue or \n" +
                 "press enter to go back to Transaction: ");
 
-        Account account = this.getActiveAccount().getDestinationAccount(in.nextLine());
+        String answer = in.nextLine();
+        if (answer.equals("")) {
+            this.showTransactionScreen();
+        }
+
+        Account account = this.getActiveAccount().getDestinationAccount(answer);
         if (account != null) {
             this.setDestinationAccount(account);
             this.showFundTransferScreen2();
@@ -293,12 +298,6 @@ class Screen {
         }
 
         while (!amount.equals("")) {
-//            Validation validateTransferAmountIsNumeric = this.getAccount().validateTransferAmountIsNumeric();
-//            if (validateTransferAmountIsNumeric.getIsError()) {
-//                System.out.println(validateTransferAmountIsNumeric.getMessage());
-//                this.showFundTransferScreen2();
-//            }
-
             Validation validateMaximumTransfer = this.getAccount().validateMaximumTransfer();
             if (validateMaximumTransfer.getIsError()) {
                 System.out.println(validateMaximumTransfer.getMessage());
