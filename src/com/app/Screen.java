@@ -113,8 +113,10 @@ class Screen {
                     this.showWelcomeScreen();
                     running = false;
                     break;
-                default:
+                case "":
                     this.showWelcomeScreen();
+                default:
+                    this.showTransactionScreen();
                     break;
             }
         }
