@@ -35,35 +35,6 @@ class ActiveAccount {
     }
 
     Account getAccount(String accountNumber, String pin) {
-        Validation validateAccountNumberLength = validateAccountNumberLength(accountNumber);
-        if (validateAccountNumberLength.getIsError()) {
-            System.out.println(validateAccountNumberLength.getMessage());
-            return null;
-        }
-
-        Validation validateAccountNumberIsNumeric = validateAccountNumberIsNumeric(accountNumber);
-        if (validateAccountNumberIsNumeric.getIsError()) {
-            System.out.println(validateAccountNumberIsNumeric.getMessage());
-            return null;
-        }
-
-        Validation validatePinLength = validatePinLength(pin);
-        if (validatePinLength.getIsError()) {
-            System.out.println(validatePinLength.getMessage());
-            return null;
-        }
-
-        Validation validatePinIsNumeric = validatePinIsNumeric(pin);
-        if (validatePinIsNumeric.getIsError()) {
-            System.out.println(validatePinIsNumeric.getMessage());
-            return null;
-        }
-
-        Validation validateAccountExistence = validateAccountExistence(accountNumber, pin);
-        if (validateAccountExistence.getIsError()) {
-            System.out.println(validateAccountExistence.getMessage());
-            return null;
-        }
 
         return checkAccount(accountNumber, pin);
     }
@@ -76,7 +47,7 @@ class ActiveAccount {
                 .orElse(null);
     }
 
-    private Validation validateAccountExistence(String accountNumber, String pin) {
+    Validation validateAccountExistence(String accountNumber, String pin) {
         Account verifiedAccount = checkAccount(accountNumber, pin);
 
         Validation validation = new Validation();
@@ -88,45 +59,12 @@ class ActiveAccount {
         return validation;
     }
 
-    private Validation validateAccountNumberLength(String accountNumber) {
-        Validation validation = new Validation();
-
-        if (accountNumber.length() < 6) {
-            validation.setIsError();
-            validation.setMessage("Account Number should have 6 digits length");
-        }
-
-        return validation;
-    }
-
     private Validation validateAccountNumberIsNumeric(String accountNumber) {
         Validation validation = new Validation();
 
         if (!accountNumber.matches("[0-9]+")) {
             validation.setIsError();
             validation.setMessage("Account Number should only contains numbers");
-        }
-
-        return validation;
-    }
-
-    private Validation validatePinLength(String pin) {
-        Validation validation = new Validation();
-
-        if (pin.length() < 6) {
-            validation.setIsError();
-            validation.setMessage("PIN should have 6 digits length");
-        }
-
-        return validation;
-    }
-
-    private Validation validatePinIsNumeric(String pin) {
-        Validation validation = new Validation();
-
-        if (!pin.matches("[0-9]+")) {
-            validation.setIsError();
-            validation.setMessage("PIN should only contains numbers");
         }
 
         return validation;

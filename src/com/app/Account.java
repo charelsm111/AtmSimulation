@@ -219,5 +219,49 @@ class Account {
         this.balance = this.balance - this.transferAmount;
     }
 
+    Validation validateAccountNumberLength() {
+        Validation validation = new Validation();
+
+        if (this.accountNumber.length() < 6) {
+            validation.setIsError();
+            validation.setMessage("Account Number should have 6 digits length");
+        }
+
+        return validation;
+    }
+
+
+    Validation validatePinLength() {
+        Validation validation = new Validation();
+
+        if (this.pin.length() < 6) {
+            validation.setIsError();
+            validation.setMessage("PIN should have 6 digits length");
+        }
+
+        return validation;
+    }
+
+    Validation validatePinIsNumeric() {
+        Validation validation = new Validation();
+
+        if (!this.pin.matches("[0-9]+")) {
+            validation.setIsError();
+            validation.setMessage("PIN should only contains numbers");
+        }
+
+        return validation;
+    }
+
+    Validation validateAccountNumberIsNumeric() {
+        Validation validation = new Validation();
+
+        if (!this.accountNumber.matches("[0-9]+")) {
+            validation.setIsError();
+            validation.setMessage("Account Number should only contains numbers");
+        }
+
+        return validation;
+    }
 
 }

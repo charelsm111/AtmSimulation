@@ -48,9 +48,40 @@ class Screen {
         System.out.print("Enter Account Number: ");
         this.getAccount().setAccountNumber(inAccountNumber.nextLine());
 
+        Validation validateAccountNumberLength = this.getAccount().validateAccountNumberLength();
+        if (validateAccountNumberLength.getIsError()) {
+            System.out.println(validateAccountNumberLength.getMessage());
+            this.showWelcomeScreen();
+        }
+
+        Validation validateAccountNumberIsNumeric = this.getAccount().validateAccountNumberIsNumeric();
+        if (validateAccountNumberIsNumeric.getIsError()) {
+            System.out.println(validateAccountNumberIsNumeric.getMessage());
+            this.showWelcomeScreen();
+        }
+
         Scanner inPin = new Scanner(System.in);
         System.out.print("Enter PIN: ");
         this.getAccount().setPin(inPin.nextLine());
+
+        Validation validatePinLength = this.getAccount().validatePinLength();
+        if (validatePinLength.getIsError()) {
+            System.out.println(validatePinLength.getMessage());
+            this.showWelcomeScreen();
+        }
+
+        Validation validatePinIsNumeric = this.getAccount().validatePinIsNumeric();
+        if (validatePinIsNumeric.getIsError()) {
+            System.out.println(validatePinIsNumeric.getMessage());
+            this.showWelcomeScreen();
+        }
+
+        String accountNumber = this.getAccount().getAccountNumber();
+        String pin = this.getAccount().getPin();
+        Validation validateAccountExistence = this.getActiveAccount().validateAccountExistence(accountNumber, pin);
+        if (validateAccountExistence.getIsError()) {
+            System.out.println(validateAccountExistence.getMessage());
+        }
 
         this.login();
     }
