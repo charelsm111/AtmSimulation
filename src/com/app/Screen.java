@@ -2,6 +2,7 @@ package com.app;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 class Screen {
@@ -152,6 +153,7 @@ class Screen {
                     if (this.account.decreaseBalanceByHundred()) {
                         this.showSummaryScreen();
                     }
+                    break;
                 case "4":
                     this.showOtherWithdrawScreen();
                     break;
@@ -223,11 +225,40 @@ class Screen {
         System.out.println("Other Withdraw");
         System.out.print("Enter Amount to Withdraw: ");
         Scanner in = new Scanner(System.in);
-        String amount = in.nextLine();
 
-        if (this.getAccount().decreaseBalance(amount)) {
-            this.showSummaryScreen();
+        try {
+            this.getAccount().setWithdrawal(in.nextInt());
+        } catch (InputMismatchException e) {
+            System.out.println("Amount should only contains numbers");
+            this.showOtherWithdrawScreen();
         }
+//
+//        Validation validateWithdrawAmountIsNumeric = this.getAccount().validateWithdrawAmountIsNumeric();
+//        if (validateWithdrawAmountIsNumeric.getIsError()) {
+//            System.out.println(validateWithdrawAmountIsNumeric.getMessage());
+//            this.showOtherWithdrawScreen();
+//        }
+
+        Validation validateMaximumWithdraw = this.getAccount().validateMaximumWithdraw();
+        if (validateMaximumWithdraw.getIsError()) {
+            System.out.println(validateMaximumWithdraw.getMessage());
+            this.showOtherWithdrawScreen();
+        }
+
+        Validation validateRemainingBalance = this.getAccount().validateRemainingBalance();
+        if (validateRemainingBalance.getIsError()) {
+            System.out.println(validateRemainingBalance.getMessage());
+            this.showOtherWithdrawScreen();
+        }
+
+        Validation validateWithdrawAmountIsTenMultiply = this.getAccount().validateWithdrawAmountIsTenMultiply();
+        if (validateWithdrawAmountIsTenMultiply.getIsError()) {
+            System.out.println(validateWithdrawAmountIsTenMultiply.getMessage());
+            this.showOtherWithdrawScreen();
+        }
+
+        this.getAccount().decreaseBalance();
+        this.showSummaryScreen();
     }
 
     private void showFundTransferScreen1() {
@@ -274,7 +305,7 @@ class Screen {
                 this.showTransactionScreen();
             }
 
-            Validation validateRemainingBalance = this.getAccount().validateRemainingBalance(iAmount);
+            Validation validateRemainingBalance = this.getAccount().validateRemainingBalance();
             if (validateRemainingBalance.getIsError()) {
                 System.out.println(validateRemainingBalance.getMessage());
                 this.showTransactionScreen();
