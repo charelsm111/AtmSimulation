@@ -64,7 +64,7 @@ class ActiveAccount {
 
         if (!accountNumber.matches("[0-9]+")) {
             validation.setIsError();
-            validation.setMessage("Account Number should only contains numbers");
+            validation.setMessage("Invalid account");
         }
 
         return validation;

@@ -271,7 +271,7 @@ class Screen {
             this.setDestinationAccount(account);
             this.showFundTransferScreen2();
         } else {
-            this.showTransactionScreen();
+            this.showFundTransferScreen1();
         }
     }
 
@@ -283,32 +283,38 @@ class Screen {
 
         String amount = in.nextLine();
 
-        while (!amount.equals("")) {
-            Validation validateTransferAmountIsNumeric = this.getAccount().validateTransferAmountIsNumeric(amount);
-            if (validateTransferAmountIsNumeric.getIsError()) {
-                System.out.println(validateTransferAmountIsNumeric.getMessage());
-                this.showTransactionScreen();
-            }
-
+        try {
             Integer iAmount = Integer.parseInt(amount);
             this.getAccount().setTransferAmount(iAmount);
+            this.getAccount().setWithdrawal(iAmount);
+        } catch (NumberFormatException e) {
+            System.out.println("Transfer amount should only contains numbers");
+            this.showFundTransferScreen2();
+        }
+
+        while (!amount.equals("")) {
+//            Validation validateTransferAmountIsNumeric = this.getAccount().validateTransferAmountIsNumeric();
+//            if (validateTransferAmountIsNumeric.getIsError()) {
+//                System.out.println(validateTransferAmountIsNumeric.getMessage());
+//                this.showFundTransferScreen2();
+//            }
 
             Validation validateMaximumTransfer = this.getAccount().validateMaximumTransfer();
             if (validateMaximumTransfer.getIsError()) {
                 System.out.println(validateMaximumTransfer.getMessage());
-                this.showTransactionScreen();
+                this.showFundTransferScreen2();
             }
 
             Validation validateMinimumTransfer = this.getAccount().validateMinimumTransfer();
             if (validateMinimumTransfer.getIsError()) {
                 System.out.println(validateMinimumTransfer.getMessage());
-                this.showTransactionScreen();
+                this.showFundTransferScreen2();
             }
 
             Validation validateRemainingBalance = this.getAccount().validateRemainingBalance();
             if (validateRemainingBalance.getIsError()) {
                 System.out.println(validateRemainingBalance.getMessage());
-                this.showTransactionScreen();
+                this.showFundTransferScreen2();
             }
 
             this.showFundTransferScreen3();
@@ -343,7 +349,7 @@ class Screen {
             this.getAccount().transferFund(this.getDestinationAccount());
             this.showFundTransferSummaryScreen();
         } else {
-            this.showTransactionScreen();
+            this.showFundTransferScreen1();
         }
     }
 
@@ -360,10 +366,12 @@ class Screen {
         Scanner in = new Scanner(System.in);
         this.setChoice(in.nextLine());
 
-        if ("2".equals(this.getChoice())) {
+        if ("1".equals(this.getChoice())) {
+            this.showTransactionScreen();
+        } else if ("2".equals(this.getChoice())) {
             this.showWelcomeScreen();
         } else {
-            this.showTransactionScreen();
+            this.showWelcomeScreen();
         }
     }
 

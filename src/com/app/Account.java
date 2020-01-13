@@ -179,11 +179,13 @@ class Account {
         return validation;
     }
 
-    Validation validateTransferAmountIsNumeric(String amount) {
+    Validation validateTransferAmountIsNumeric() {
+        String amount = Integer.toString(this.transferAmount);
+
         Validation validation = new Validation();
         if (!amount.matches("[0-9]+")) {
             validation.setIsError();
-            validation.setMessage("Invalid amount");
+            validation.setMessage("Transfer amount should only contains numbers");
         }
 
         return validation;
