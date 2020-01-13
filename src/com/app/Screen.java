@@ -114,7 +114,7 @@ class Screen {
                     running = false;
                     break;
                 default:
-                    this.showTransactionMenu();
+                    this.showWelcomeScreen();
                     break;
             }
         }
