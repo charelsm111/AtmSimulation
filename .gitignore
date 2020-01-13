@@ -83,3 +83,9 @@ modules.xml
 
 # Sonarlint plugin
 .idea/sonarlint
+
+# Compiled classes
+src/com/app/*.class
+
+# Jar file
+src/*.jar
