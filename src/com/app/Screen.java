@@ -116,6 +116,7 @@ class Screen {
                     break;
                 case "":
                     this.showWelcomeScreen();
+                    running = false;
                 default:
                     this.showTransactionScreen();
                     break;
@@ -232,12 +233,6 @@ class Screen {
             System.out.println("Amount should only contains numbers");
             this.showOtherWithdrawScreen();
         }
-//
-//        Validation validateWithdrawAmountIsNumeric = this.getAccount().validateWithdrawAmountIsNumeric();
-//        if (validateWithdrawAmountIsNumeric.getIsError()) {
-//            System.out.println(validateWithdrawAmountIsNumeric.getMessage());
-//            this.showOtherWithdrawScreen();
-//        }
 
         Validation validateMaximumWithdraw = this.getAccount().validateMaximumWithdraw();
         if (validateMaximumWithdraw.getIsError()) {
@@ -266,12 +261,12 @@ class Screen {
         System.out.print("Please enter destination account and press enter to continue or \n" +
                 "press enter to go back to Transaction: ");
 
-        String answer = in.nextLine();
-        if (answer.equals("")) {
+        String accountNumber = in.nextLine();
+        if (accountNumber.equals("")) {
             this.showTransactionScreen();
         }
 
-        Account account = this.getActiveAccount().getDestinationAccount(answer);
+        Account account = this.getActiveAccount().getDestinationAccount(accountNumber);
         if (account != null) {
             this.setDestinationAccount(account);
             this.showFundTransferScreen2();
@@ -297,30 +292,29 @@ class Screen {
             this.showFundTransferScreen2();
         }
 
-        while (!amount.equals("")) {
-            Validation validateMaximumTransfer = this.getAccount().validateMaximumTransfer();
-            if (validateMaximumTransfer.getIsError()) {
-                System.out.println(validateMaximumTransfer.getMessage());
-                this.showFundTransferScreen2();
-            }
-
-            Validation validateMinimumTransfer = this.getAccount().validateMinimumTransfer();
-            if (validateMinimumTransfer.getIsError()) {
-                System.out.println(validateMinimumTransfer.getMessage());
-                this.showFundTransferScreen2();
-            }
-
-            Validation validateRemainingBalance = this.getAccount().validateRemainingBalance();
-            if (validateRemainingBalance.getIsError()) {
-                System.out.println(validateRemainingBalance.getMessage());
-                this.showFundTransferScreen2();
-            }
-
-            this.showFundTransferScreen3();
-            amount = "exit";
+        if (amount.equals("")) {
+            this.showTransactionScreen();
         }
 
-        this.showTransactionScreen();
+        Validation validateMaximumTransfer = this.getAccount().validateMaximumTransfer();
+        if (validateMaximumTransfer.getIsError()) {
+            System.out.println(validateMaximumTransfer.getMessage());
+            this.showFundTransferScreen2();
+        }
+
+        Validation validateMinimumTransfer = this.getAccount().validateMinimumTransfer();
+        if (validateMinimumTransfer.getIsError()) {
+            System.out.println(validateMinimumTransfer.getMessage());
+            this.showFundTransferScreen2();
+        }
+
+        Validation validateRemainingBalance = this.getAccount().validateRemainingBalance();
+        if (validateRemainingBalance.getIsError()) {
+            System.out.println(validateRemainingBalance.getMessage());
+            this.showFundTransferScreen2();
+        }
+
+        this.showFundTransferScreen3();
     }
 
     private void showFundTransferScreen3() {
@@ -373,5 +367,4 @@ class Screen {
             this.showWelcomeScreen();
         }
     }
-
 }

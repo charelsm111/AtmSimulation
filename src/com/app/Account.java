@@ -135,20 +135,6 @@ class Account {
         return validation;
     }
 
-
-    Validation validateWithdrawAmountIsNumeric() {
-        String amount = Integer.toString(this.withdrawal);
-
-        Validation validation = new Validation();
-        if (!amount.matches("[0-9]+")) {
-            validation.setIsError();
-            validation.setMessage("Amount should only contains numbers");
-        }
-
-        return validation;
-    }
-
-
     Validation validateWithdrawAmountIsTenMultiply() {
         Validation validation = new Validation();
         if (this.withdrawal % 10 != 0) {
@@ -174,18 +160,6 @@ class Account {
         if (this.getTransferAmount() < MIN_TRANSFER_AMOUNT) {
             validation.setIsError();
             validation.setMessage("Minimum amount to withdraw is $" + MIN_TRANSFER_AMOUNT);
-        }
-
-        return validation;
-    }
-
-    Validation validateTransferAmountIsNumeric() {
-        String amount = Integer.toString(this.transferAmount);
-
-        Validation validation = new Validation();
-        if (!amount.matches("[0-9]+")) {
-            validation.setIsError();
-            validation.setMessage("Transfer amount should only contains numbers");
         }
 
         return validation;
