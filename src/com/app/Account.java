@@ -4,9 +4,9 @@ import java.util.Random;
 
 class Account {
 
-    private static final Integer DECREASE_TEN = 10;
-    private static final Integer DECREASE_FIFTY = 50;
-    private static final Integer DECREASE_HUNDRED = 100;
+    static final Integer DECREASE_TEN = 10;
+    static final Integer DECREASE_FIFTY = 50;
+    static final Integer DECREASE_HUNDRED = 100;
     private static final Integer MAX_WITHDRAWAL_AMOUNT = 1000;
     private static final Integer MAX_TRANSFER_AMOUNT = 1000;
     private static final Integer MIN_TRANSFER_AMOUNT = 1;
@@ -71,43 +71,19 @@ class Account {
         this.withdrawal = withdrawal;
     }
 
-    boolean decreaseBalanceByTen() {
-        this.withdrawal = DECREASE_TEN;
-
-        Validation validateRemainingBalance = this.validateRemainingBalance();
-        if (validateRemainingBalance.getIsError()) {
-            System.out.println(validateRemainingBalance.getMessage());
-            return false;
-        }
+    void decreaseBalanceByTen() {
 
         this.balance = this.balance - DECREASE_TEN;
-        return true;
     }
 
-    boolean decreaseBalanceByFifty() {
-        this.withdrawal = DECREASE_FIFTY;
-
-        Validation validateRemainingBalance = this.validateRemainingBalance();
-        if (validateRemainingBalance.getIsError()) {
-            System.out.println(validateRemainingBalance.getMessage());
-            return false;
-        }
+    void decreaseBalanceByFifty() {
 
         this.balance = this.balance - DECREASE_FIFTY;
-        return true;
     }
 
-    boolean decreaseBalanceByHundred() {
-        this.withdrawal = DECREASE_HUNDRED;
-
-        Validation validateRemainingBalance = this.validateRemainingBalance();
-        if (validateRemainingBalance.getIsError()) {
-            System.out.println(validateRemainingBalance.getMessage());
-            return false;
-        }
+    void decreaseBalanceByHundred() {
 
         this.balance = this.balance - DECREASE_HUNDRED;
-        return true;
     }
 
     void decreaseBalance() {

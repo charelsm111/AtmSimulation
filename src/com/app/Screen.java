@@ -141,19 +141,37 @@ class Screen {
 
             switch(this.getChoice()){
                 case "1":
-                    if (this.getAccount().decreaseBalanceByTen()) {
-                        this.showSummaryScreen();
+                    this.getAccount().setWithdrawal(Account.DECREASE_TEN);
+
+                    if (this.getAccount().validateRemainingBalance().getIsError()) {
+                        System.out.println(this.getAccount().validateRemainingBalance().getMessage());
+                        this.showTransactionScreen();
                     }
+
+                    this.getAccount().decreaseBalanceByTen();
+                    this.showSummaryScreen();
                     break;
                 case "2":
-                    if (this.account.decreaseBalanceByFifty()) {
-                        this.showSummaryScreen();
+                    this.getAccount().setWithdrawal(Account.DECREASE_FIFTY);
+
+                    if (this.getAccount().validateRemainingBalance().getIsError()) {
+                        System.out.println(this.getAccount().validateRemainingBalance().getMessage());
+                        this.showTransactionScreen();
                     }
+
+                    this.getAccount().decreaseBalanceByFifty();
+                    this.showSummaryScreen();
                     break;
                 case "3":
-                    if (this.account.decreaseBalanceByHundred()) {
-                        this.showSummaryScreen();
+                    this.getAccount().setWithdrawal(Account.DECREASE_HUNDRED);
+
+                    if (this.getAccount().validateRemainingBalance().getIsError()) {
+                        System.out.println(this.getAccount().validateRemainingBalance().getMessage());
+                        this.showTransactionScreen();
                     }
+
+                    this.getAccount().decreaseBalanceByHundred();
+                    this.showSummaryScreen();
                     break;
                 case "4":
                     this.showOtherWithdrawScreen();
