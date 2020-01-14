@@ -12,7 +12,7 @@ class Screen {
     private ActiveAccount activeAccount;
     private Account destinationAccount;
 
-    void setAccount(Account account) {
+    private void setAccount(Account account) {
         this.account = account;
     }
 
@@ -20,7 +20,7 @@ class Screen {
         return this.account;
     }
 
-    void setActiveAccount(ActiveAccount activeAccount) {
+    private void setActiveAccount(ActiveAccount activeAccount) {
         this.activeAccount = activeAccount;
     }
 
@@ -42,6 +42,11 @@ class Screen {
 
     private Account getDestinationAccount() {
         return this.destinationAccount;
+    }
+
+    Screen() {
+        this.setAccount(new Account());
+        this.setActiveAccount(new ActiveAccount());
     }
 
     void showWelcomeScreen() {
