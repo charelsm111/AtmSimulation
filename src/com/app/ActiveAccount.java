@@ -39,7 +39,7 @@ class ActiveAccount {
         return checkAccount(accountNumber, pin);
     }
 
-    private Account checkAccount(String accountNumber, String pin) {
+    Account checkAccount(String accountNumber, String pin) {
 
         return accounts.stream()
                 .filter(account -> accountNumber.equals(account.getAccountNumber()) && pin.equals(account.getPin()))
@@ -59,7 +59,7 @@ class ActiveAccount {
         return validation;
     }
 
-    private Validation validateAccountNumberIsNumeric(String accountNumber) {
+    Validation validateAccountNumberIsNumeric(String accountNumber) {
         Validation validation = new Validation();
 
         if (!accountNumber.matches("[0-9]+")) {
@@ -71,6 +71,7 @@ class ActiveAccount {
     }
 
     Account getDestinationAccount(String accountNumber) {
+        // TODO: Validation should be removed from here
         Validation validateAccountNumberIsNumeric = validateAccountNumberIsNumeric(accountNumber);
         if (validateAccountNumberIsNumeric.getIsError()) {
             System.out.println(validateAccountNumberIsNumeric.getMessage());
@@ -86,7 +87,7 @@ class ActiveAccount {
         return this.getAccountByAccountNumber(accountNumber);
     }
 
-    private Validation validateDestinationAccountNumber(String accountNumber) {
+    Validation validateDestinationAccountNumber(String accountNumber) {
         Account verifiedAccount = getAccountByAccountNumber(accountNumber);
 
         Validation validation = new Validation();
@@ -98,7 +99,7 @@ class ActiveAccount {
         return validation;
     }
 
-    private Account getAccountByAccountNumber(String accountNumber) {
+    Account getAccountByAccountNumber(String accountNumber) {
 
         return accounts.stream()
                 .filter(acc -> accountNumber.equals(acc.getAccountNumber()))

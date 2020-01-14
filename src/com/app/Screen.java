@@ -289,6 +289,7 @@ class Screen {
             this.showTransactionScreen();
         }
 
+        // TODO: Maybe the validations should be here
         Account account = this.getActiveAccount().getDestinationAccount(accountNumber);
         if (account != null) {
             this.setDestinationAccount(account);
