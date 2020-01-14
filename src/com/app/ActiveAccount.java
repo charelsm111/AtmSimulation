@@ -39,6 +39,7 @@ class ActiveAccount {
         return checkAccount(accountNumber, pin);
     }
 
+    // TODO: This should be merged with getAccount();
     Account checkAccount(String accountNumber, String pin) {
 
         return accounts.stream()
@@ -86,7 +87,8 @@ class ActiveAccount {
 
         return validation;
     }
-
+    
+    // TODO: This should be merged with getAccount();
     Account getAccountByAccountNumber(String accountNumber) {
 
         return accounts.stream()
