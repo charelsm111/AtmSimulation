@@ -71,18 +71,6 @@ class ActiveAccount {
     }
 
     Account getDestinationAccount(String accountNumber) {
-        // TODO: Validation should be removed from here
-        Validation validateAccountNumberIsNumeric = validateAccountNumberIsNumeric(accountNumber);
-        if (validateAccountNumberIsNumeric.getIsError()) {
-            System.out.println(validateAccountNumberIsNumeric.getMessage());
-            return null;
-        }
-
-        Validation validateDestinationAccountNumber = this.validateDestinationAccountNumber(accountNumber);
-        if (validateDestinationAccountNumber.getIsError()) {
-            System.out.println(validateDestinationAccountNumber.getMessage());
-            return null;
-        }
 
         return this.getAccountByAccountNumber(accountNumber);
     }

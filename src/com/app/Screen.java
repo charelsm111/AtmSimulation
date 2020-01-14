@@ -289,7 +289,18 @@ class Screen {
             this.showTransactionScreen();
         }
 
-        // TODO: Maybe the validations should be here
+        Validation validateAccountNumberIsNumeric = this.getActiveAccount().validateAccountNumberIsNumeric(accountNumber);
+        if (validateAccountNumberIsNumeric.getIsError()) {
+            System.out.println(validateAccountNumberIsNumeric.getMessage());
+            this.showFundTransferScreen1();
+        }
+
+        Validation validateDestinationAccountNumber = this.getActiveAccount().validateDestinationAccountNumber(accountNumber);
+        if (validateDestinationAccountNumber.getIsError()) {
+            System.out.println(validateDestinationAccountNumber.getMessage());
+            this.showFundTransferScreen1();
+        }
+
         Account account = this.getActiveAccount().getDestinationAccount(accountNumber);
         if (account != null) {
             this.setDestinationAccount(account);
