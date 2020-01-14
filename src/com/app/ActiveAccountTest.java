@@ -19,13 +19,13 @@ class ActiveAccountTest {
         String accountNumber = "112233";
         String pin = "012108";
 
-        Account account = this.activeAccount.checkAccount(accountNumber, pin);
+        Account account = this.activeAccount.getAccount(accountNumber, pin);
         assertEquals("John Doe", account.getName());
 
         accountNumber = "112233";
         pin = "111111";
 
-        account = this.activeAccount.checkAccount(accountNumber, pin);
+        account = this.activeAccount.getAccount(accountNumber, pin);
         assertNull(account);
     }
 
@@ -72,11 +72,11 @@ class ActiveAccountTest {
     @Test
     void testGetAccountByAccountNumber() {
         String accountNumber = "112233";
-        Account account = this.activeAccount.getAccountByAccountNumber(accountNumber);
+        Account account = this.activeAccount.getAccount(accountNumber);
         assertEquals("John Doe", account.getName());
 
         accountNumber = "221233";
-        account = this.activeAccount.getAccountByAccountNumber(accountNumber);
+        account = this.activeAccount.getAccount(accountNumber);
         assertNull(account);
     }
 

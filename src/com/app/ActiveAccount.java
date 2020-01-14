@@ -36,20 +36,22 @@ class ActiveAccount {
 
     Account getAccount(String accountNumber, String pin) {
 
-        return checkAccount(accountNumber, pin);
-    }
-
-    // TODO: This should be merged with getAccount();
-    Account checkAccount(String accountNumber, String pin) {
-
         return accounts.stream()
                 .filter(account -> accountNumber.equals(account.getAccountNumber()) && pin.equals(account.getPin()))
                 .findAny()
                 .orElse(null);
     }
 
+    Account getAccount(String accountNumber) {
+
+        return accounts.stream()
+                .filter(acc -> accountNumber.equals(acc.getAccountNumber()))
+                .findAny()
+                .orElse(null);
+    }
+
     Validation validateAccountExistence(String accountNumber, String pin) {
-        Account verifiedAccount = checkAccount(accountNumber, pin);
+        Account verifiedAccount = this.getAccount(accountNumber, pin);
 
         Validation validation = new Validation();
         if (verifiedAccount == null) {
@@ -73,11 +75,11 @@ class ActiveAccount {
 
     Account getDestinationAccount(String accountNumber) {
 
-        return this.getAccountByAccountNumber(accountNumber);
+        return this.getAccount(accountNumber);
     }
 
     Validation validateDestinationAccountNumber(String accountNumber) {
-        Account verifiedAccount = getAccountByAccountNumber(accountNumber);
+        Account verifiedAccount = getAccount(accountNumber);
 
         Validation validation = new Validation();
         if (verifiedAccount == null) {
@@ -87,13 +89,5 @@ class ActiveAccount {
 
         return validation;
     }
-    
-    // TODO: This should be merged with getAccount();
-    Account getAccountByAccountNumber(String accountNumber) {
 
-        return accounts.stream()
-                .filter(acc -> accountNumber.equals(acc.getAccountNumber()))
-                .findAny()
-                .orElse(null);
-    }
 }
