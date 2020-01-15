@@ -90,4 +90,8 @@ class ActiveAccount {
         return validation;
     }
 
+    void readAccountsFromFile() {
+        // Read from csv
+    }
+
 }
