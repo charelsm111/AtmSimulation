@@ -12,10 +12,12 @@ class ActiveAccount {
     private List<Account> accounts;
     private static final String FILE_NAME = "accounts.csv";
     private static final String FILE_DIR = "files";
+    private boolean dataIsLoaded;
 
     ActiveAccount() {
         this.accounts = new ArrayList<>();
 
+        // TODO: This should be removed due to csv resources
         Account account1 = new Account();
         account1.setName("John Doe");
         account1.setPin("012108");
@@ -51,6 +53,14 @@ class ActiveAccount {
                 .filter(acc -> accountNumber.equals(acc.getAccountNumber()))
                 .findAny()
                 .orElse(null);
+    }
+
+    void setDataIsLoaded(boolean dataIsLoaded) {
+        this.dataIsLoaded = dataIsLoaded;
+    }
+
+    boolean getDataIsLoaded() {
+        return this.dataIsLoaded;
     }
 
     Validation validateAccountExistence(String accountNumber, String pin) {
@@ -93,9 +103,13 @@ class ActiveAccount {
         return validation;
     }
 
-    void readAccountsFromFile() {
+    void getAccountsFromFile(String pathname) {
+        File file = new File(pathname);
+        if (pathname.equals("")) {
+            file = new File(ActiveAccount.FILE_DIR + "/" + ActiveAccount.FILE_NAME);
+        }
+
         try {
-            File file = new File(ActiveAccount.FILE_DIR + "/" + ActiveAccount.FILE_NAME);
             FileReader fileReader = new FileReader(file);
             String line;
 
@@ -104,9 +118,12 @@ class ActiveAccount {
                 String[] data = line.split(",");
 
                 // TODO: Save data to Account Object
+                System.out.println(data[0]);
             }
+
+            this.setDataIsLoaded(true);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.printf("%s not found\n", pathname);
         }
     }
 

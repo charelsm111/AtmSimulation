@@ -47,7 +47,6 @@ class Screen {
     Screen() {
         this.setAccount(new Account());
         this.setActiveAccount(new ActiveAccount());
-        this.getActiveAccount().readAccountsFromFile();
     }
 
     void showWelcomeScreen() {
@@ -402,5 +401,19 @@ class Screen {
         } else {
             this.showWelcomeScreen();
         }
+    }
+
+    void showLoadDataScreen() {
+        Scanner pathname = new Scanner(System.in);
+        System.out.print("Enter Data Path \n" +
+                "(i.e C:\\data.csv) or \n" +
+                "press ENTER to use DEFAULT data: ");
+        this.getActiveAccount().getAccountsFromFile(pathname.nextLine());
+
+        if (this.getActiveAccount().getDataIsLoaded()) {
+            this.showWelcomeScreen();
+        }
+
+        this.showLoadDataScreen();
     }
 }
