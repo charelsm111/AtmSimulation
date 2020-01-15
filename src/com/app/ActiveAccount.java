@@ -2,7 +2,11 @@ package com.app;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /*
 *   Class to storing and fetching the active member
@@ -10,30 +14,8 @@ import java.util.List;
 class ActiveAccount {
 
     private List<Account> accounts;
-    private static final String FILE_NAME = "accounts.csv";
-    private static final String FILE_DIR = "files";
+    private static final String PATHNAME = "files/accounts.csv";
     private boolean dataIsLoaded;
-
-    ActiveAccount() {
-        this.accounts = new ArrayList<>();
-
-        // TODO: This should be removed due to csv resources
-        Account account1 = new Account();
-        account1.setName("John Doe");
-        account1.setPin("012108");
-        account1.setBalance(100);
-        account1.setAccountNumber("112233");
-        accounts.add(account1);
-
-        Account account2 = new Account();
-        account2.setName("Jane Doe");
-        account2.setPin("932012");
-        account2.setBalance(30);
-        account2.setAccountNumber("112244");
-        accounts.add(account2);
-
-        this.setAccounts(accounts);
-    }
 
     private void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
@@ -106,25 +88,47 @@ class ActiveAccount {
     void getAccountsFromFile(String pathname) {
         File file = new File(pathname);
         if (pathname.equals("")) {
-            file = new File(ActiveAccount.FILE_DIR + "/" + ActiveAccount.FILE_NAME);
+            file = new File(ActiveAccount.PATHNAME);
         }
 
         try {
             FileReader fileReader = new FileReader(file);
             String line;
+            this.accounts = new ArrayList<>();
 
             BufferedReader reader = new BufferedReader(fileReader);
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
 
-                // TODO: Save data to Account Object
-                System.out.println(data[0]);
+                Account account = new Account();
+                account.setName(data[0]);
+                account.setPin(data[1]);
+                Integer balance = Integer.parseInt(data[2]);
+                account.setBalance(balance);
+                account.setAccountNumber(data[3]);
+                accounts.add(account);
             }
 
-            this.setDataIsLoaded(true);
+            this.setAccounts(accounts);
+            if (this.getAccountHasDuplicateValue().size() >= 1) {
+                for(Account account: getAccountHasDuplicateValue()) {
+                    System.out.printf("You have duplicated account number for: %s\n", account.getAccountNumber());
+                }
+            } else {
+                this.setDataIsLoaded(true);
+            }
         } catch (IOException e) {
             System.out.printf("%s not found\n", pathname);
         }
     }
 
+    List<Account> getAccountHasDuplicateValue() {
+
+        return this.accounts.stream().collect(Collectors.groupingBy(Function.identity(),
+                Collectors.counting()))
+                .entrySet().stream()
+                .filter(e -> e.getValue() > 1L)
+                .map(e -> e.getKey())
+                .collect(Collectors.toList());
+    }
 }

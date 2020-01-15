@@ -1,5 +1,6 @@
 package com.app;
 
+import java.util.Objects;
 import java.util.Random;
 
 class Account {
@@ -199,4 +200,24 @@ class Account {
         return validation;
     }
 
+    /*
+    * Used to compare the equality of two objects
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return accountNumber.equals(account.getAccountNumber());
+    }
+
+    /*
+    * Collection use a hashcode value of an object to determine
+    * how it should be stored inside a collection. Must be overridden
+    * in every class which override equals() method
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountNumber);
+    }
 }
