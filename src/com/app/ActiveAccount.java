@@ -1,5 +1,6 @@
 package com.app;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import java.util.List;
 class ActiveAccount {
 
     private List<Account> accounts;
+    private static final String FILE_NAME = "accounts.csv";
+    private static final String FILE_DIR = "files";
 
     ActiveAccount() {
         this.accounts = new ArrayList<>();
@@ -91,7 +94,20 @@ class ActiveAccount {
     }
 
     void readAccountsFromFile() {
-        // Read from csv
+        try {
+            File file = new File(ActiveAccount.FILE_DIR + "/" + ActiveAccount.FILE_NAME);
+            FileReader fileReader = new FileReader(file);
+            String line;
+
+            BufferedReader reader = new BufferedReader(fileReader);
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+
+                // TODO: Save data to Account Object
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

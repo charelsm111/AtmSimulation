@@ -47,6 +47,7 @@ class Screen {
     Screen() {
         this.setAccount(new Account());
         this.setActiveAccount(new ActiveAccount());
+        this.getActiveAccount().readAccountsFromFile();
     }
 
     void showWelcomeScreen() {
