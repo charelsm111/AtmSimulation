@@ -34,8 +34,8 @@ class ActiveAccount {
                 .orElse(null);
     }
 
-    void setDataIsLoaded(boolean dataIsLoaded) {
-        this.dataIsLoaded = dataIsLoaded;
+    private void setDataIsLoaded() {
+        this.dataIsLoaded = true;
     }
 
     boolean getDataIsLoaded() {
@@ -82,7 +82,7 @@ class ActiveAccount {
         return validation;
     }
 
-    void getAccountsFromFile(String pathname) {
+    void setAccountsFromFile(String pathname) {
         File file = new File(pathname);
         if (pathname.equals("")) {
             file = new File(ActiveAccount.PATHNAME);
@@ -110,23 +110,27 @@ class ActiveAccount {
             if (this.getAccountHasDuplicateValue().size() >= 1) {
                 for(Account account: getAccountHasDuplicateValue()) {
                     System.out.printf("You have duplicated account number for: %s\n", account.getAccountNumber());
+                    Screen screen = new Screen();
+                    screen.showLoadDataScreen();
                 }
             } else {
-                this.setDataIsLoaded(true);
+                this.setDataIsLoaded();
             }
         } catch (IOException e) {
             System.out.printf("%s not found\n", pathname);
+            Screen screen = new Screen();
+            screen.showLoadDataScreen();
         }
     }
 
-    List<Account> getAccountHasDuplicateValue() {
+    private List<Account> getAccountHasDuplicateValue() {
 
         return this.accounts
                 .stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())) // First we make a Map with Account as key and an Account Count as a value
                 .entrySet().stream() // then Convert the Map to other Stream
                 .filter(e -> e.getValue() > 1L) // Filter the new Stream by its Value
-                .map(e -> e.getKey()) // Fill the filtered list with the Account object
+                .map(Map.Entry::getKey) // Fill the filtered list with the Account object
                 .collect(Collectors.toList()); // Convert the Stream to the List
     }
 }

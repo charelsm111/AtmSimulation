@@ -1,5 +1,7 @@
 package com.app;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Random;
 
@@ -219,5 +221,18 @@ class Account {
     @Override
     public int hashCode() {
         return Objects.hash(accountNumber);
+    }
+
+    void saveWithdraw() {
+        Withdraw withdraw = new Withdraw(this);
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+
+        withdraw.setDate(formattedDateTime);
+        withdraw.setAmount(this.getWithdrawal());
+        withdraw.setBalance(this.getBalance());
+        withdraw.saveToFile();
     }
 }

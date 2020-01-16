@@ -49,7 +49,7 @@ class Screen {
         this.setActiveAccount(new ActiveAccount());
     }
 
-    void showWelcomeScreen() {
+    private void showWelcomeScreen() {
         Scanner inAccountNumber = new Scanner(System.in);
         System.out.print("Enter Account Number: ");
         this.getAccount().setAccountNumber(inAccountNumber.nextLine());
@@ -154,6 +154,7 @@ class Screen {
                     }
 
                     this.getAccount().decreaseBalanceByTen();
+                    this.getAccount().saveWithdraw();
                     this.showSummaryScreen();
                     break;
                 case "2":
@@ -165,6 +166,7 @@ class Screen {
                     }
 
                     this.getAccount().decreaseBalanceByFifty();
+                    this.getAccount().saveWithdraw();
                     this.showSummaryScreen();
                     break;
                 case "3":
@@ -408,12 +410,10 @@ class Screen {
         System.out.print("Enter Data Path \n" +
                 "(i.e C:\\data.csv) or \n" +
                 "press ENTER to use DEFAULT data: ");
-        this.getActiveAccount().getAccountsFromFile(pathname.nextLine());
+        this.getActiveAccount().setAccountsFromFile(pathname.nextLine());
 
         if (this.getActiveAccount().getDataIsLoaded()) {
             this.showWelcomeScreen();
         }
-
-        this.showLoadDataScreen();
     }
 }
