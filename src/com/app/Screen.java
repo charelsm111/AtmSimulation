@@ -147,38 +147,15 @@ class Screen {
             switch(this.getChoice()){
                 case "1":
                     this.getAccount().setWithdrawal(Account.DECREASE_TEN);
-
-                    if (this.getAccount().validateRemainingBalance().getIsError()) {
-                        System.out.println(this.getAccount().validateRemainingBalance().getMessage());
-                        this.showTransactionScreen();
-                    }
-
-                    this.getAccount().decreaseBalanceByTen();
-                    this.getAccount().saveWithdraw();
-                    this.showSummaryScreen();
+                    this.withdraw();
                     break;
                 case "2":
                     this.getAccount().setWithdrawal(Account.DECREASE_FIFTY);
-
-                    if (this.getAccount().validateRemainingBalance().getIsError()) {
-                        System.out.println(this.getAccount().validateRemainingBalance().getMessage());
-                        this.showTransactionScreen();
-                    }
-
-                    this.getAccount().decreaseBalanceByFifty();
-                    this.getAccount().saveWithdraw();
-                    this.showSummaryScreen();
+                    this.withdraw();
                     break;
                 case "3":
                     this.getAccount().setWithdrawal(Account.DECREASE_HUNDRED);
-
-                    if (this.getAccount().validateRemainingBalance().getIsError()) {
-                        System.out.println(this.getAccount().validateRemainingBalance().getMessage());
-                        this.showTransactionScreen();
-                    }
-
-                    this.getAccount().decreaseBalanceByHundred();
-                    this.showSummaryScreen();
+                    this.withdraw();
                     break;
                 case "4":
                     this.showOtherWithdrawScreen();
@@ -192,6 +169,17 @@ class Screen {
                     break;
             }
         }
+    }
+
+    private void withdraw() {
+        if (this.getAccount().validateRemainingBalance().getIsError()) {
+            System.out.println(this.getAccount().validateRemainingBalance().getMessage());
+            this.showTransactionScreen();
+        }
+
+        this.getAccount().decreaseBalanceByHundred();
+        this.getAccount().saveWithdraw();
+        this.showSummaryScreen();
     }
 
     private void showWithdrawMenu() {
@@ -278,6 +266,7 @@ class Screen {
         }
 
         this.getAccount().decreaseBalance();
+        this.getAccount().saveWithdraw();
         this.showSummaryScreen();
     }
 
