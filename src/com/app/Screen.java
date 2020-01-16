@@ -366,6 +366,7 @@ class Screen {
 
         if ("1".equals(this.getChoice())) {
             this.getAccount().transferFund(this.getDestinationAccount());
+            this.getAccount().saveTransferFund(this.getDestinationAccount());
             this.showFundTransferSummaryScreen();
         } else {
             this.showFundTransferScreen1();

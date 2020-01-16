@@ -234,4 +234,18 @@ class Account {
         withdraw.setAmount(this.getWithdrawal());
         withdraw.saveToFile();
     }
+
+    void saveTransferFund(Account destinationAccount) {
+        FundTransfer fundTransfer = new FundTransfer(this);
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+
+        fundTransfer.setDate(formattedDateTime);
+        fundTransfer.setAmount(this.getWithdrawal());
+        fundTransfer.setDestinationAccountNumber(destinationAccount.getAccountNumber());
+        fundTransfer.saveToFile();
+    }
+
 }

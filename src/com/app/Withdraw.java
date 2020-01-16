@@ -4,30 +4,12 @@ import java.io.*;
 
 class Withdraw extends Transaction {
 
-    private String date;
-    private Integer amount;
-
-    void setDate(String date) {
-        this.date = date;
-    }
-
-    private String getDate() {
-        return this.date;
-    }
-
-    void setAmount(Integer amount) {
-        this.amount = amount;
-    }
-
-    private Integer getAmount() {
-        return this.amount;
-    }
-
     Withdraw(Account account) {
         this.account = account;
     }
 
     // TODO: Should be saved in object format
+    @Override
     void saveToFile() {
         try {
             String record = this.account.getAccountNumber() + "," +
