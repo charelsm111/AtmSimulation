@@ -90,5 +90,6 @@ src/com/app/*.class
 # Jar file
 src/*.jar
 
-# Withdraw Transaction
+# Transaction files
 files/withdraw.csv
+files/transfer.csv
