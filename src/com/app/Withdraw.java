@@ -4,34 +4,20 @@ import java.io.*;
 
 class Withdraw extends Transaction {
 
+    private static final String TYPE_WITHDRAW = "withdraw";
+
     Withdraw(Account account) {
         this.account = account;
     }
 
-    // TODO: Should be saved in object format
     @Override
-    void saveToFile() {
-        try {
-            String record = this.account.getAccountNumber() + "," +
-                    this.getDate() + "," +
-                    this.getAmount();
+    String getRecord() {
+        this.setType(TYPE_WITHDRAW);
 
-            // Save withdraw record
-            File withdraw = new File("files/withdraw.csv");
-            if (withdraw.createNewFile()) {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(withdraw));
-                writer.write(record);
-                writer.close();
-            } else {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(withdraw, true));
-                writer.append("\n");
-                writer.append(record);
-                writer.close();
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+        return this.record =  this.getType() + "," +
+                this.account.getAccountNumber() + "," +
+                this.getDate() + "," +
+                this.getAmount();
     }
 
 }
