@@ -1,21 +1,15 @@
 package com.app;
 
-import java.io.*;
-
 class Withdraw extends Transaction {
 
-    private static final String TYPE_WITHDRAW = "withdraw";
-
-    Withdraw(Account account) {
-        this.account = account;
-    }
+    static final String TYPE_WITHDRAW = "withdraw";
 
     @Override
     String getRecord() {
         this.setType(TYPE_WITHDRAW);
 
         return this.record =  this.getType() + "," +
-                this.account.getAccountNumber() + "," +
+                this.getAccountNumber() + "," +
                 this.getDate() + "," +
                 this.getAmount();
     }

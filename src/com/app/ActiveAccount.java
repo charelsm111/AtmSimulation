@@ -82,11 +82,8 @@ class ActiveAccount {
         return validation;
     }
 
-    void setAccountsFromFile(String pathname) {
-        File file = new File(pathname);
-        if (pathname.equals("")) {
-            file = new File(ActiveAccount.PATHNAME);
-        }
+    void setAccountsFromFile() {
+        File file = new File(ActiveAccount.PATHNAME);
 
         try {
             FileReader fileReader = new FileReader(file);
@@ -110,16 +107,12 @@ class ActiveAccount {
             if (this.getAccountHasDuplicateValue().size() >= 1) {
                 for(Account account: getAccountHasDuplicateValue()) {
                     System.out.printf("You have duplicated account number for: %s\n", account.getAccountNumber());
-                    Screen screen = new Screen();
-                    screen.showLoadDataScreen();
                 }
             } else {
                 this.setDataIsLoaded();
             }
         } catch (IOException e) {
-            System.out.printf("%s not found\n", pathname);
-            Screen screen = new Screen();
-            screen.showLoadDataScreen();
+            System.out.printf("%s not found\n", PATHNAME);
         }
     }
 

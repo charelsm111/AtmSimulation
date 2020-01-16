@@ -1,16 +1,18 @@
 package com.app;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class Transaction {
 
-    Account account;
-    String date;
-    Integer amount;
-    String type;
+    private static final String PATHNAME = "files/transactions.csv";
+
+    private String accountNumber;
+    private String date;
+    private Integer amount;
+    private String type;
+    private String destinationAccountNumber;
     String record;
 
     void setDate(String date) {
@@ -41,6 +43,22 @@ class Transaction {
         return this.record;
     }
 
+    void setDestinationAccountNumber(String destinationAccountNumber) {
+        this.destinationAccountNumber = destinationAccountNumber;
+    }
+
+    String getDestinationAccountNumber() {
+        return this.destinationAccountNumber;
+    }
+
+    void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    String getAccountNumber() {
+        return this.accountNumber;
+    }
+
     void saveToFile() {
         try {
             File transfer = new File("files/transactions.csv");
@@ -59,4 +77,35 @@ class Transaction {
             e.printStackTrace();
         }
     }
+
+    List<Transaction> getAllTransactionsFromFile() {
+        File file = new File(PATHNAME);
+        List<Transaction> transactions = new ArrayList<>();
+
+        try {
+            FileReader fileReader = new FileReader(file);
+            String line;
+
+            BufferedReader reader = new BufferedReader(fileReader);
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                Transaction transaction = new Transaction();
+                transaction.setType(data[0]);
+                transaction.setAccountNumber(data[1]);
+                transaction.setDate(data[2]);
+                Integer amount = Integer.parseInt(data[3]);
+                transaction.setAmount(amount);
+                if (data.length  > 4) {
+                    transaction.setDestinationAccountNumber(data[4]);
+                }
+                transactions.add(transaction);
+            }
+
+            return transactions;
+        } catch (IOException e) {
+            System.out.printf("%s not found\n", PATHNAME);
+            return transactions;
+        }
+    }
+
 }

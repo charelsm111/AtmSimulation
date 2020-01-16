@@ -3,6 +3,7 @@ package com.app;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 class Screen {
@@ -47,6 +48,14 @@ class Screen {
     Screen() {
         this.setAccount(new Account());
         this.setActiveAccount(new ActiveAccount());
+    }
+
+    void init() {
+        this.getActiveAccount().setAccountsFromFile();
+
+        if (this.getActiveAccount().getDataIsLoaded()) {
+            this.showWelcomeScreen();
+        }
     }
 
     private void showWelcomeScreen() {
@@ -116,6 +125,9 @@ class Screen {
                     this.showFundTransferScreen1();
                     break;
                 case "3":
+                    this.showHistoryScreen();
+                    break;
+                case "4":
                     this.showWelcomeScreen();
                     running = false;
                     break;
@@ -132,7 +144,8 @@ class Screen {
     private void showTransactionMenu() {
         System.out.println("1. Withdraw");
         System.out.println("2. Fund Transfer");
-        System.out.println("3. Exit");
+        System.out.println("3. History");
+        System.out.println("4. Exit");
         System.out.print("Please choose option[3]: ");
         Scanner in = new Scanner(System.in);
         this.setChoice(in.nextLine());
@@ -395,15 +408,21 @@ class Screen {
         }
     }
 
-    void showLoadDataScreen() {
-        Scanner pathname = new Scanner(System.in);
-        System.out.print("Enter Data Path \n" +
-                "(i.e C:\\data.csv) or \n" +
-                "press ENTER to use DEFAULT data: ");
-        this.getActiveAccount().setAccountsFromFile(pathname.nextLine());
+    private void showHistoryScreen() {
+        List<Transaction> transactions = this.getAccount().getMyLastTenTransactions();
 
-        if (this.getActiveAccount().getDataIsLoaded()) {
-            this.showWelcomeScreen();
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions");
+        } else {
+            for (Transaction transaction: transactions) {
+                if (transaction.getType().equals(Withdraw.TYPE_WITHDRAW)) {
+                    System.out.printf("%s %s-> amount: $%s\n", transaction.getDate(), transaction.getType(),
+                            transaction.getAmount());
+                } else {
+                    System.out.printf("%s %s-> amount: $%s to: %s\n", transaction.getDate(), transaction.getType(),
+                            transaction.getAmount(), transaction.getDestinationAccountNumber());
+                }
+            }
         }
     }
 }
