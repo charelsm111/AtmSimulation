@@ -1,10 +1,7 @@
 package com.app;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -124,11 +121,12 @@ class ActiveAccount {
 
     List<Account> getAccountHasDuplicateValue() {
 
-        return this.accounts.stream().collect(Collectors.groupingBy(Function.identity(),
-                Collectors.counting()))
-                .entrySet().stream()
-                .filter(e -> e.getValue() > 1L)
-                .map(e -> e.getKey())
-                .collect(Collectors.toList());
+        return this.accounts
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())) // First we make a Map with Account as key and an Account Count as a value
+                .entrySet().stream() // then Convert the Map to other Stream
+                .filter(e -> e.getValue() > 1L) // Filter the new Stream by its Value
+                .map(e -> e.getKey()) // Fill the filtered list with the Account object
+                .collect(Collectors.toList()); // Convert the Stream to the List
     }
 }
