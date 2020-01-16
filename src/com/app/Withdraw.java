@@ -6,7 +6,6 @@ class Withdraw extends Transaction {
 
     private String date;
     private Integer amount;
-    private Integer balance;
 
     void setDate(String date) {
         this.date = date;
@@ -24,35 +23,24 @@ class Withdraw extends Transaction {
         return this.amount;
     }
 
-    void setBalance(Integer balance) {
-        this.balance = balance;
-    }
-
-    private Integer getBalance() {
-        return this.balance;
-    }
-
     Withdraw(Account account) {
         this.account = account;
     }
 
+    // TODO: Should be saved in object format
     void saveToFile() {
         try {
+            String record = this.account.getAccountNumber() + "," +
+                    this.getDate() + "," +
+                    this.getAmount();
+
             // Save withdraw record
             File withdraw = new File("files/withdraw.csv");
             if (withdraw.createNewFile()) {
-                String record = this.account.getAccountNumber() + "," +
-                        this.getDate() + "," +
-                        this.getAmount() + "," +
-                        this.getBalance();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(withdraw));
                 writer.write(record);
                 writer.close();
             } else {
-                String record = this.account.getAccountNumber() + "," +
-                        this.getDate() + "," +
-                        this.getAmount() + "," +
-                        this.getBalance();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(withdraw, true));
                 writer.append("\n");
                 writer.append(record);

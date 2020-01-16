@@ -232,7 +232,6 @@ class Account {
 
         withdraw.setDate(formattedDateTime);
         withdraw.setAmount(this.getWithdrawal());
-        withdraw.setBalance(this.getBalance());
         withdraw.saveToFile();
     }
 }
