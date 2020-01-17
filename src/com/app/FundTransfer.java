@@ -2,7 +2,7 @@ package com.app;
 
 class FundTransfer extends Transaction {
 
-    private static final String TYPE_TRANSFER = "transfer";
+    static final String TYPE_TRANSFER = "transfer";
 
     @Override
     String getRecord() {
