@@ -409,20 +409,45 @@ class Screen {
     }
 
     private void showHistoryScreen() {
-        List<Transaction> transactions = this.getAccount().getMyLastTenTransactions();
+        List<Transaction> transactions = this.getAccount().getLastTenTransactions();
 
         if (transactions.isEmpty()) {
             System.out.println("No transactions");
         } else {
-            for (Transaction transaction: transactions) {
-                if (transaction.getType().equals(Withdraw.TYPE_WITHDRAW)) {
-                    System.out.printf("%s %s-> amount: $%s\n", transaction.getDate(), transaction.getType(),
-                            transaction.getAmount());
-                } else {
-                    System.out.printf("%s %s-> amount: $%s to: %s\n", transaction.getDate(), transaction.getType(),
-                            transaction.getAmount(), transaction.getDestinationAccountNumber());
-                }
-            }
+            this.showTransaction(transactions);
+
+            this.showOtherHistoryScreen();
         }
+    }
+
+    private void showTransaction(List<Transaction> transactions) {
+        Integer no = 1;
+        for (Transaction transaction: transactions) {
+            if (transaction.getType().equals(Withdraw.TYPE_WITHDRAW)) {
+                System.out.printf("%d.%s %s-> amount: $%s\n", no, transaction.getDate(), transaction.getType(),
+                        transaction.getAmount());
+            } else {
+                System.out.printf("%d.%s %s-> amount: $%s to: %s\n", no, transaction.getDate(), transaction.getType(),
+                        transaction.getAmount(), transaction.getDestinationAccountNumber());
+            }
+            no++;
+        }
+    }
+
+    private void showOtherHistoryScreen() {
+        Scanner in = new Scanner(System.in);
+        System.out.print("Please enter an amount of last transactions or \n" +
+                "press enter to go back to Transaction: ");
+        String amount = in.nextLine();
+
+        while(amount.equals("")) {
+            this.showTransactionScreen();
+        }
+
+        Integer iAmount = Integer.parseInt(amount);
+
+        List<Transaction> transactions = this.getAccount().getTransactions(iAmount);
+
+        this.showTransaction(transactions);
     }
 }

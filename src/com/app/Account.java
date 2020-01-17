@@ -252,13 +252,23 @@ class Account {
         fundTransfer.saveToFile();
     }
 
-    List<Transaction> getMyLastTenTransactions() {
+    List<Transaction> getLastTenTransactions() {
         Transaction transaction = new Transaction();
         List<Transaction> transactions = transaction.getAllTransactionsFromFile();
 
         return transactions.stream()
                 .filter(transaction1 -> transaction1.getAccountNumber().equals(this.getAccountNumber()))
                 .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    List<Transaction> getTransactions(Integer amount) {
+        Transaction transaction = new Transaction();
+        List<Transaction> transactions = transaction.getAllTransactionsFromFile();
+
+        return transactions.stream()
+                .filter(transaction1 -> transaction1.getAccountNumber().equals(this.getAccountNumber()))
+                .limit(amount)
                 .collect(Collectors.toList());
     }
 }
