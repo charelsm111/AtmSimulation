@@ -33,24 +33,6 @@ class AccountTest {
     }
 
     @Test
-    void testDecreaseBalanceByTen() {
-        this.account.decreaseBalanceByTen();
-        assertEquals(90, this.account.getBalance());
-    }
-
-    @Test
-    void testDecreaseBalanceByFifty() {
-        this.account.decreaseBalanceByFifty();
-        assertEquals(50, this.account.getBalance());
-    }
-
-    @Test
-    void testDecreaseBalanceByHundred() {
-        this.account.decreaseBalanceByHundred();
-        assertEquals(0, this.account.getBalance());
-    }
-
-    @Test
     void testDecreaseBalance() {
         this.account.setWithdrawal(20);
         this.account.decreaseBalance();

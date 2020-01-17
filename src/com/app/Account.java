@@ -2,6 +2,7 @@ package com.app;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -74,21 +75,6 @@ class Account {
 
     void setWithdrawal(Integer withdrawal) {
         this.withdrawal = withdrawal;
-    }
-
-    void decreaseBalanceByTen() {
-
-        this.balance = this.balance - DECREASE_TEN;
-    }
-
-    void decreaseBalanceByFifty() {
-
-        this.balance = this.balance - DECREASE_FIFTY;
-    }
-
-    void decreaseBalanceByHundred() {
-
-        this.balance = this.balance - DECREASE_HUNDRED;
     }
 
     void decreaseBalance() {
@@ -229,7 +215,7 @@ class Account {
         Withdraw withdraw = new Withdraw();
 
         LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
 
         withdraw.setAccountNumber(this.getAccountNumber());
@@ -242,7 +228,7 @@ class Account {
         FundTransfer fundTransfer = new FundTransfer();
 
         LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
 
         fundTransfer.setAccountNumber(this.getAccountNumber());
@@ -258,6 +244,7 @@ class Account {
 
         return transactions.stream()
                 .filter(transaction1 -> transaction1.getAccountNumber().equals(this.getAccountNumber()))
+                .sorted(Comparator.reverseOrder())
                 .limit(10)
                 .collect(Collectors.toList());
     }
@@ -268,7 +255,9 @@ class Account {
 
         return transactions.stream()
                 .filter(transaction1 -> transaction1.getAccountNumber().equals(this.getAccountNumber()))
+                .sorted(Comparator.reverseOrder())
                 .limit(amount)
                 .collect(Collectors.toList());
     }
+
 }
