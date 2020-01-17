@@ -61,7 +61,7 @@ class Transaction {
 
     void saveToFile() {
         try {
-            File transfer = new File("files/transactions.csv");
+            File transfer = new File(PATHNAME);
             if (transfer.createNewFile()) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(transfer));
                 writer.write(this.getRecord());
@@ -104,6 +104,7 @@ class Transaction {
             return transactions;
         } catch (IOException e) {
             System.out.printf("%s not found\n", PATHNAME);
+
             return transactions;
         }
     }
