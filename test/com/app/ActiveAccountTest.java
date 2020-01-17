@@ -3,7 +3,9 @@ package com.app;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -97,6 +99,20 @@ class ActiveAccountTest {
         accountNumber = "221233";
         account = this.activeAccount.getAccount(accountNumber);
         assertNull(account);
+    }
+
+    @Test
+    void testSetAccountsFromFile() {
+        this.activeAccount.setAccountsFromFile();
+
+        assertTrue(this.activeAccount.getDataIsLoaded());
+    }
+
+    @Test
+    void testGetAccountHasDuplicateValue() {
+        List<Account> accounts = this.activeAccount.getAccountHasDuplicateValue();
+
+        assertTrue(accounts.isEmpty());
     }
 
 }

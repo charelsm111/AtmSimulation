@@ -73,7 +73,7 @@ class Transaction {
                 writer.close();
             }
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("File not found.");
             e.printStackTrace();
         }
     }

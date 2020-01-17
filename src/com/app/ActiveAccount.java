@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 class ActiveAccount {
 
     List<Account> accounts;
-    private static final String PATHNAME = "files/accounts.csv";
+    static final String PATHNAME = "files/accounts.csv";
     private boolean dataIsLoaded;
 
     void setAccounts(List<Account> accounts) {
@@ -116,7 +116,7 @@ class ActiveAccount {
         }
     }
 
-    private List<Account> getAccountHasDuplicateValue() {
+    List<Account> getAccountHasDuplicateValue() {
 
         return this.accounts
                 .stream()
