@@ -190,7 +190,7 @@ class Screen {
             this.showTransactionScreen();
         }
 
-        this.getAccount().decreaseBalanceByHundred();
+        this.getAccount().decreaseBalance();
         this.getAccount().saveWithdraw();
         this.showSummaryScreen();
     }
@@ -322,6 +322,10 @@ class Screen {
 
         String amount = in.nextLine();
 
+        if (amount.equals("")) {
+            this.showTransactionScreen();
+        }
+
         try {
             Integer iAmount = Integer.parseInt(amount);
             this.getAccount().setTransferAmount(iAmount);
@@ -329,10 +333,6 @@ class Screen {
         } catch (NumberFormatException e) {
             System.out.println("Transfer amount should only contains numbers");
             this.showFundTransferScreen2();
-        }
-
-        if (amount.equals("")) {
-            this.showTransactionScreen();
         }
 
         Validation validateMaximumTransfer = this.getAccount().validateMaximumTransfer();

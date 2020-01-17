@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class Transaction {
+class Transaction implements Comparable<Transaction> {
 
     private static final String PATHNAME = "files/transactions.csv";
 
@@ -107,6 +107,11 @@ class Transaction {
 
             return transactions;
         }
+    }
+
+    @Override
+    public int compareTo(Transaction transaction) {
+        return this.getDate().compareTo(transaction.getDate());
     }
 
 }
