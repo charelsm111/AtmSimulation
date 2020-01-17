@@ -24,4 +24,15 @@ class Validation {
         return message;
     }
 
+    static Validation validateInputIsNumeric(String input) {
+        Validation validation = new Validation();
+
+        if (!input.matches("[0-9]+")) {
+            validation.setIsError();
+        }
+
+        return validation;
+    }
+
+
 }

@@ -69,9 +69,8 @@ class Screen {
             this.showWelcomeScreen();
         }
 
-        Validation validateAccountNumberIsNumeric = this.getAccount().validateAccountNumberIsNumeric();
-        if (validateAccountNumberIsNumeric.getIsError()) {
-            System.out.println(validateAccountNumberIsNumeric.getMessage());
+        if (Validation.validateInputIsNumeric(this.getAccount().getAccountNumber()).getIsError()) {
+            System.out.println("Account number should only contains numbers");
             this.showWelcomeScreen();
         }
 
@@ -85,9 +84,8 @@ class Screen {
             this.showWelcomeScreen();
         }
 
-        Validation validatePinIsNumeric = this.getAccount().validatePinIsNumeric();
-        if (validatePinIsNumeric.getIsError()) {
-            System.out.println(validatePinIsNumeric.getMessage());
+        if (Validation.validateInputIsNumeric(this.getAccount().getPin()).getIsError()) {
+            System.out.println("PIN should only contains numbers");
             this.showWelcomeScreen();
         }
 
@@ -293,9 +291,8 @@ class Screen {
             this.showTransactionScreen();
         }
 
-        Validation validateAccountNumberIsNumeric = this.getActiveAccount().validateAccountNumberIsNumeric(accountNumber);
-        if (validateAccountNumberIsNumeric.getIsError()) {
-            System.out.println(validateAccountNumberIsNumeric.getMessage());
+        if (Validation.validateInputIsNumeric(this.getAccount().getAccountNumber()).getIsError()) {
+            System.out.println("Account number should only contains numbers");
             this.showFundTransferScreen1();
         }
 
@@ -442,6 +439,11 @@ class Screen {
 
         while(amount.equals("")) {
             this.showTransactionScreen();
+        }
+
+        if (Validation.validateInputIsNumeric(amount).getIsError()) {
+            System.out.println("Input should only contains numbers");
+            this.showOtherHistoryScreen();
         }
 
         Integer iAmount = Integer.parseInt(amount);

@@ -120,24 +120,4 @@ class AccountTest {
         assertEquals("PIN should have 6 digits length", this.account.validatePinLength().getMessage());
     }
 
-    @Test
-    void testPinIsNumeric() {
-        assertFalse(this.account.validatePinIsNumeric().getIsError());
-        assertNull(this.account.validatePinIsNumeric().getMessage());
-
-        this.account.setPin("12345a");
-        assertTrue(this.account.validatePinIsNumeric().getIsError());
-        assertEquals("PIN should only contains numbers", this.account.validatePinIsNumeric().getMessage());
-    }
-
-    @Test
-    void testAccountNumberIsNumeric() {
-        assertFalse(this.account.validateAccountNumberIsNumeric().getIsError());
-        assertNull(this.account.validateAccountNumberIsNumeric().getMessage());
-
-        this.account.setAccountNumber("12345a");
-        assertTrue(this.account.validateAccountNumberIsNumeric().getIsError());
-        String expected = "Account Number should only contains numbers";
-        assertEquals(expected, this.account.validateAccountNumberIsNumeric().getMessage());
-    }
 }
