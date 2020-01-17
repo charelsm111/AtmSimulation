@@ -99,25 +99,4 @@ class AccountTest {
         assertEquals(80, this.account.getBalance());
     }
 
-    @Test
-    void testValidateAccountNumberLength() {
-        assertFalse(this.account.validateAccountNumberLength().getIsError());
-        assertNull(this.account.validateAccountNumberLength().getMessage());
-
-        this.account.setAccountNumber("12345");
-        assertTrue(this.account.validateAccountNumberLength().getIsError());
-        String expected = "Account Number should have 6 digits length";
-        assertEquals(expected, this.account.validateAccountNumberLength().getMessage());
-    }
-
-    @Test
-    void testValidatePinLength() {
-        assertFalse(this.account.validatePinLength().getIsError());
-        assertNull(this.account.validatePinLength().getMessage());
-
-        this.account.setPin("12345");
-        assertTrue(this.account.validatePinLength().getIsError());
-        assertEquals("PIN should have 6 digits length", this.account.validatePinLength().getMessage());
-    }
-
 }

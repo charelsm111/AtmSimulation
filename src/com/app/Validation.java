@@ -34,5 +34,15 @@ class Validation {
         return validation;
     }
 
+    static Validation validateInputLength(String input, Integer length) {
+        Validation validation = new Validation();
+
+        if (input.length() < length) {
+            validation.setIsError();
+            validation.setMessage("Account Number should have 6 digits length");
+        }
+
+        return validation;
+    }
 
 }

@@ -63,9 +63,8 @@ class Screen {
         System.out.print("Enter Account Number: ");
         this.getAccount().setAccountNumber(inAccountNumber.nextLine());
 
-        Validation validateAccountNumberLength = this.getAccount().validateAccountNumberLength();
-        if (validateAccountNumberLength.getIsError()) {
-            System.out.println(validateAccountNumberLength.getMessage());
+        if (Validation.validateInputLength(this.getAccount().getAccountNumber(), 6).getIsError()) {
+            System.out.printf("Account Number should have %d digits length\n", 6);
             this.showWelcomeScreen();
         }
 
@@ -78,9 +77,8 @@ class Screen {
         System.out.print("Enter PIN: ");
         this.getAccount().setPin(inPin.nextLine());
 
-        Validation validatePinLength = this.getAccount().validatePinLength();
-        if (validatePinLength.getIsError()) {
-            System.out.println(validatePinLength.getMessage());
+        if (Validation.validateInputLength(this.getAccount().getPin(), 6).getIsError()) {
+            System.out.printf("PIN should have %d digits length\n", 6);
             this.showWelcomeScreen();
         }
 

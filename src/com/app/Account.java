@@ -145,28 +145,6 @@ class Account {
         this.balance = this.balance - this.transferAmount;
     }
 
-    Validation validateAccountNumberLength() {
-        Validation validation = new Validation();
-
-        if (this.accountNumber.length() < 6) {
-            validation.setIsError();
-            validation.setMessage("Account Number should have 6 digits length");
-        }
-
-        return validation;
-    }
-
-    Validation validatePinLength() {
-        Validation validation = new Validation();
-
-        if (this.pin.length() < 6) {
-            validation.setIsError();
-            validation.setMessage("PIN should have 6 digits length");
-        }
-
-        return validation;
-    }
-
     /*
     * Used to compare the equality of two objects
      */
