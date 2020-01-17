@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
  */
 class ActiveAccount {
 
-    private List<Account> accounts;
+    List<Account> accounts;
     private static final String PATHNAME = "files/accounts.csv";
     private boolean dataIsLoaded;
 
-    private void setAccounts(List<Account> accounts) {
+    void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
 
