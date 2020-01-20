@@ -2,8 +2,6 @@ package com.app;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /*
 *   Class to storing and fetching the active member
@@ -12,9 +10,15 @@ class ActiveAccount {
 
     List<Account> accounts;
     static final String PATHNAME = "files/accounts.csv";
-    private boolean dataIsLoaded;
 
-    void setAccounts(List<Account> accounts) {
+    void setAccounts(Map<String, Account> accountMaps) {
+
+        List<Account> accounts = new ArrayList<>();
+
+        for(Map.Entry<String, Account> accountEntry: accountMaps.entrySet()) {
+            accounts.add(accountEntry.getValue());
+        }
+
         this.accounts = accounts;
     }
 
@@ -32,14 +36,6 @@ class ActiveAccount {
                 .filter(acc -> accountNumber.equals(acc.getAccountNumber()))
                 .findAny()
                 .orElse(null);
-    }
-
-    private void setDataIsLoaded() {
-        this.dataIsLoaded = true;
-    }
-
-    boolean getDataIsLoaded() {
-        return this.dataIsLoaded;
     }
 
     Validation validateAccountExistence(String accountNumber, String pin) {
@@ -88,7 +84,7 @@ class ActiveAccount {
         try {
             FileReader fileReader = new FileReader(file);
             String line;
-            this.accounts = new ArrayList<>();
+            Map<String, Account> accountMap = new HashMap<>();
 
             BufferedReader reader = new BufferedReader(fileReader);
             while ((line = reader.readLine()) != null) {
@@ -100,30 +96,13 @@ class ActiveAccount {
                 Integer balance = Integer.parseInt(data[2]);
                 account.setBalance(balance);
                 account.setAccountNumber(data[3]);
-                accounts.add(account);
+                accountMap.put(account.getAccountNumber(), account);
             }
 
-            this.setAccounts(accounts);
-            if (this.getAccountHasDuplicateValue().size() >= 1) {
-                for(Account account: getAccountHasDuplicateValue()) {
-                    System.out.printf("You have duplicated account number for: %s\n", account.getAccountNumber());
-                }
-            } else {
-                this.setDataIsLoaded();
-            }
+            this.setAccounts(accountMap);
         } catch (IOException e) {
             System.out.printf("%s not found\n", PATHNAME);
         }
     }
 
-    List<Account> getAccountHasDuplicateValue() {
-
-        return this.accounts
-                .stream()
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())) // First we make a Map with Account as key and an Account Count as a value
-                .entrySet().stream() // then Convert the Map to other Stream
-                .filter(e -> e.getValue() > 1L) // Filter the new Stream by its Value
-                .map(Map.Entry::getKey) // Fill the filtered list with the Account object
-                .collect(Collectors.toList()); // Convert the Stream to the List
-    }
 }

@@ -3,9 +3,9 @@ package com.app;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,21 +18,23 @@ class ActiveAccountTest {
         this.activeAccount = new ActiveAccount();
         this.activeAccount.accounts = new ArrayList<>();
 
+        Map<String, Account> accountMap = new HashMap<>();
+
         Account account1 = new Account();
         account1.setName("John Doe");
         account1.setPin("012108");
         account1.setBalance(100);
         account1.setAccountNumber("112233");
-        this.activeAccount.accounts.add(account1);
+        accountMap.put(account1.getAccountNumber(), account1);
 
         Account account2 = new Account();
         account2.setName("Jane Doe");
         account2.setPin("932012");
         account2.setBalance(30);
         account2.setAccountNumber("112244");
-        this.activeAccount.accounts.add(account2);
+        accountMap.put(account2.getAccountNumber(), account2);
 
-        this.activeAccount.setAccounts(this.activeAccount.accounts);
+        this.activeAccount.setAccounts(accountMap);
     }
 
     @Test
@@ -101,18 +103,5 @@ class ActiveAccountTest {
         assertNull(account);
     }
 
-    @Test
-    void testSetAccountsFromFile() {
-        this.activeAccount.setAccountsFromFile();
-
-        assertTrue(this.activeAccount.getDataIsLoaded());
-    }
-
-    @Test
-    void testGetAccountHasDuplicateValue() {
-        List<Account> accounts = this.activeAccount.getAccountHasDuplicateValue();
-
-        assertTrue(accounts.isEmpty());
-    }
 
 }

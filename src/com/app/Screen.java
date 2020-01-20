@@ -53,9 +53,7 @@ class Screen {
     void init() {
         this.getActiveAccount().setAccountsFromFile();
 
-        if (this.getActiveAccount().getDataIsLoaded()) {
-            this.showWelcomeScreen();
-        }
+        this.showWelcomeScreen();
     }
 
     private void showWelcomeScreen() {

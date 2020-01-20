@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -143,27 +142,6 @@ class Account {
     void transferFund(Account destinationAccount) {
         destinationAccount.balance = destinationAccount.balance + this.transferAmount;
         this.balance = this.balance - this.transferAmount;
-    }
-
-    /*
-    * Used to compare the equality of two objects
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return accountNumber.equals(account.getAccountNumber());
-    }
-
-    /*
-    * Collection use a hashcode value of an object to determine
-    * how it should be stored inside a collection. Must be overridden
-    * in every class which override equals() method
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(accountNumber);
     }
 
     void saveWithdraw() {
