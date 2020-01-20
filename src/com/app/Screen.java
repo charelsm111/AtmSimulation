@@ -12,6 +12,7 @@ class Screen {
     private String choice;
     private ActiveAccount activeAccount;
     private Account destinationAccount;
+    private ActiveTransaction activeTransaction;
 
     private void setAccount(Account account) {
         this.account = account;
@@ -45,9 +46,16 @@ class Screen {
         return this.destinationAccount;
     }
 
+    private void setActiveTransaction(ActiveTransaction activeTransaction) {
+        this.activeTransaction = activeTransaction;
+    }
+
+    private ActiveTransaction getActiveTransaction() { return this.activeTransaction; }
+
     Screen() {
         this.setAccount(new Account());
         this.setActiveAccount(new ActiveAccount());
+        this.setActiveTransaction(new ActiveTransaction());
     }
 
     void init() {
@@ -187,7 +195,13 @@ class Screen {
         }
 
         this.getAccount().decreaseBalance();
-        this.getAccount().saveWithdraw();
+
+        Withdraw withdraw = new Withdraw();
+        withdraw.setAccountNumber(this.getAccount().getAccountNumber());
+        withdraw.setDate(Screen.getFormattedDateTime());
+        withdraw.setAmount(this.getAccount().getWithdrawal());
+        this.getActiveTransaction().addTransaction(withdraw);
+
         this.showSummaryScreen();
     }
 
@@ -275,7 +289,13 @@ class Screen {
         }
 
         this.getAccount().decreaseBalance();
-        this.getAccount().saveWithdraw();
+
+        Withdraw withdraw = new Withdraw();
+        withdraw.setAccountNumber(this.getAccount().getAccountNumber());
+        withdraw.setDate(Screen.getFormattedDateTime());
+        withdraw.setAmount(this.getAccount().getWithdrawal());
+        this.getActiveTransaction().addTransaction(withdraw);
+
         this.showSummaryScreen();
     }
 
@@ -374,7 +394,14 @@ class Screen {
 
         if ("1".equals(this.getChoice())) {
             this.getAccount().transferFund(this.getDestinationAccount());
-            this.getAccount().saveTransferFund(this.getDestinationAccount());
+
+            FundTransfer fundTransfer = new FundTransfer();
+            fundTransfer.setAccountNumber(this.getAccount().getAccountNumber());
+            fundTransfer.setDate(Screen.getFormattedDateTime());
+            fundTransfer.setAmount(this.getAccount().getWithdrawal());
+            fundTransfer.setDestinationAccountNumber(this.getDestinationAccount().getAccountNumber());
+            this.getActiveTransaction().addTransaction(fundTransfer);
+
             this.showFundTransferSummaryScreen();
         } else {
             this.showFundTransferScreen1();
@@ -404,7 +431,7 @@ class Screen {
     }
 
     private void showHistoryScreen() {
-        List<Transaction> transactions = this.getAccount().getLastTenTransactions();
+        List<Transaction> transactions = this.getActiveTransaction().getLastTenTransactions(this.getAccount());
 
         if (transactions.isEmpty()) {
             System.out.println("No transactions");
@@ -446,8 +473,15 @@ class Screen {
 
         Integer iAmount = Integer.parseInt(amount);
 
-        List<Transaction> transactions = this.getAccount().getTransactions(iAmount);
+        List<Transaction> transactions = this.getActiveTransaction().getTransactions(this.getAccount(), iAmount);
 
         this.showTransaction(transactions);
+    }
+
+    private static String getFormattedDateTime() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
+
+        return localDateTime.format(dateTimeFormatter);
     }
 }

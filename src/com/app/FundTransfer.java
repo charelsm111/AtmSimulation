@@ -4,14 +4,7 @@ class FundTransfer extends Transaction {
 
     static final String TYPE_TRANSFER = "transfer";
 
-    @Override
-    String getRecord() {
+    FundTransfer() {
         this.setType(TYPE_TRANSFER);
-
-        return this.record =  this.getType() + "," +
-                this.getAccountNumber() + "," +
-                this.getDate() + "," +
-                this.getAmount() + "," +
-                this.getDestinationAccountNumber();
     }
 }

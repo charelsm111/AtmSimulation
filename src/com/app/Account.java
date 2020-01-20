@@ -1,12 +1,6 @@
 package com.app;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.*;
 
 class Account {
 
@@ -164,55 +158,6 @@ class Account {
     @Override
     public int hashCode() {
         return Objects.hash(accountNumber);
-    }
-
-    void saveWithdraw() {
-        Withdraw withdraw = new Withdraw();
-
-        LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
-        String formattedDateTime = localDateTime.format(dateTimeFormatter);
-
-        withdraw.setAccountNumber(this.getAccountNumber());
-        withdraw.setDate(formattedDateTime);
-        withdraw.setAmount(this.getWithdrawal());
-        withdraw.saveToFile();
-    }
-
-    void saveTransferFund(Account destinationAccount) {
-        FundTransfer fundTransfer = new FundTransfer();
-
-        LocalDateTime localDateTime = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a");
-        String formattedDateTime = localDateTime.format(dateTimeFormatter);
-
-        fundTransfer.setAccountNumber(this.getAccountNumber());
-        fundTransfer.setDate(formattedDateTime);
-        fundTransfer.setAmount(this.getWithdrawal());
-        fundTransfer.setDestinationAccountNumber(destinationAccount.getAccountNumber());
-        fundTransfer.saveToFile();
-    }
-
-    List<Transaction> getLastTenTransactions() {
-        Transaction transaction = new Transaction();
-        List<Transaction> transactions = transaction.getAllTransactionsFromFile();
-
-        return transactions.stream()
-                .filter(transaction1 -> transaction1.getAccountNumber().equals(this.getAccountNumber()))
-                .sorted(Comparator.reverseOrder())
-                .limit(10)
-                .collect(Collectors.toList());
-    }
-
-    List<Transaction> getTransactions(Integer amount) {
-        Transaction transaction = new Transaction();
-        List<Transaction> transactions = transaction.getAllTransactionsFromFile();
-
-        return transactions.stream()
-                .filter(transaction1 -> transaction1.getAccountNumber().equals(this.getAccountNumber()))
-                .sorted(Comparator.reverseOrder())
-                .limit(amount)
-                .collect(Collectors.toList());
     }
 
 }
