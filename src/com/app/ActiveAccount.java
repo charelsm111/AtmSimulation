@@ -1,7 +1,11 @@
 package com.app;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*
 *   Class to storing and fetching the active member
@@ -79,15 +83,11 @@ class ActiveAccount {
     }
 
     void setAccountsFromFile() {
-        File file = new File(ActiveAccount.PATHNAME);
+        try (Stream<String> stream = Files.lines(Paths.get(PATHNAME))) {
+            List<String> lines = stream.collect(Collectors.toList());
 
-        try {
-            FileReader fileReader = new FileReader(file);
-            String line;
             Map<String, Account> accountMap = new HashMap<>();
-
-            BufferedReader reader = new BufferedReader(fileReader);
-            while ((line = reader.readLine()) != null) {
+            for (String line: lines) {
                 String[] data = line.split(",");
 
                 Account account = new Account();
@@ -101,7 +101,7 @@ class ActiveAccount {
 
             this.setAccounts(accountMap);
         } catch (IOException e) {
-            System.out.printf("%s not found\n", PATHNAME);
+            e.printStackTrace();
         }
     }
 
