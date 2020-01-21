@@ -5,11 +5,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class ActiveTransaction {
+class TransactionRepository {
 
     private List<Transaction> transactionList;
 
-    ActiveTransaction() {
+    TransactionRepository() {
         this.transactionList = new ArrayList<>();
     }
 
