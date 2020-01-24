@@ -1,17 +1,14 @@
-package com.app;
+package com.charel;
 
-class Withdraw extends Transaction {
+public class Withdraw extends Transaction {
 
-    static final String TYPE_WITHDRAW = "withdraw";
+    Withdraw() {
+        setType();
+    }
 
     @Override
-    String getRecord() {
-        this.setType(TYPE_WITHDRAW);
-
-        return this.record =  this.getType() + "," +
-                this.getAccountNumber() + "," +
-                this.getDate() + "," +
-                this.getAmount();
+    public void setType() {
+        type = "withdraw";
     }
 
 }

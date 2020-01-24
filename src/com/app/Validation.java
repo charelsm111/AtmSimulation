@@ -1,48 +1,44 @@
-package com.app;
+package com.charel;
 
-/*
-*   A class to handle error message
- */
-class Validation {
+public class Validation {
 
-    private boolean isError = false;
-    private String message;
-
-    void setIsError() {
-        this.isError = true;
-    }
-
-    boolean getIsError() {
-        return isError;
-    }
-
-    void setMessage(String message) {
-        this.message = message;
-    }
-
-    String getMessage() {
-        return message;
-    }
-
-    static Validation validateInputIsNumeric(String input) {
-        Validation validation = new Validation();
-
-        if (!input.matches("[0-9]+")) {
-            validation.setIsError();
-        }
-
-        return validation;
-    }
-
-    static Validation validateInputLength(String input, Integer length) {
-        Validation validation = new Validation();
-
+    public static boolean validateLengthDigit(String input, int length) {
         if (input.length() < length) {
-            validation.setIsError();
-            validation.setMessage("Account Number should have 6 digits length");
+            return false;
         }
 
-        return validation;
+        return true;
     }
 
+    public static boolean validateInputIsNumeric(String input) {
+        if (!input.matches("[0-9]+")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean validateMaximumDraw(int amount) {
+        if (amount >= 1000) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean  validateInputIsTenMultiplied(int input) {
+        if (input % 10 != 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean validateMinimumDraw(int amount) {
+        if (amount < 1) {
+            return false;
+        }
+
+        return true;
+    }
 }
