@@ -1,4 +1,4 @@
-package com.charel;
+package com.app;
 
 import java.util.List;
 import java.util.Scanner;

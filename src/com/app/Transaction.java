@@ -1,4 +1,4 @@
-package com.charel;
+package com.app;
 
 public abstract class Transaction implements Comparable<Transaction> {
 
