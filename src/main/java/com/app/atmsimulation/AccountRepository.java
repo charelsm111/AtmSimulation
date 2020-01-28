@@ -1,4 +1,4 @@
-package com.app;
+package com.app.atmsimulation;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-package com.app;
+package com.app.atmsimulation;
 
 import java.util.Random;
 

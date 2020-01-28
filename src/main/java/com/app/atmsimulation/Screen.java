@@ -1,4 +1,4 @@
-package com.app;
+package com.app.atmsimulation;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

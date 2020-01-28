@@ -1,4 +1,4 @@
-package com.app;
+package com.app.atmsimulation;
 
 public class Withdraw extends Transaction {
 
