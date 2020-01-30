@@ -1,7 +1,9 @@
 package com.app.atmsimulation;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import java.util.stream.Stream;
 
 public class AccountRepository {
 
-    static final String PATHNAME = "files/accounts.csv";
+    static final String PATHNAME = "accounts.csv";
     private static AccountRepository instance = null;
 
     List<Account> accountList = new ArrayList<Account>();
@@ -31,7 +33,14 @@ public class AccountRepository {
     }
 
     void readFile() {
-        try (Stream<String> stream = Files.lines(Paths.get(PATHNAME))) {
+        Path path = null;
+        try {
+            path = Paths.get(getClass().getClassLoader().getResource(PATHNAME).toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        try (Stream<String> stream = Files.lines(path)) {
             List<String> lines = stream.collect(Collectors.toList());
 
             for (String line: lines) {
