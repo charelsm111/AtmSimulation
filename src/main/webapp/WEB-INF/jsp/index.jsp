@@ -8,7 +8,7 @@
 
 <body>
     <div class="container">
-        <h1>Welcome: ${accountNumber}</h1>
+        <h1>Welcome: ${sessionScope.account.name} </h1>
     </div>
 </body>
 </html>
