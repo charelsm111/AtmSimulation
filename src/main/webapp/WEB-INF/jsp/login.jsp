@@ -10,7 +10,7 @@
         <h1>Welcome</h1>
         <form action="/login" method="POST">
           <div class="form-group">
-            <label for="accountNumber">Email address</label>
+            <label for="accountNumber">Account Number</label>
             <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="Enter account number">
           </div>
           <div class="form-group">
