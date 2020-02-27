@@ -8,7 +8,7 @@
 <body>
     <div class="container">
         <h1>Welcome</h1>
-        <form>
+        <form action="/login" method="POST">
           <div class="form-group">
             <label for="accountNumber">Email address</label>
             <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="Enter account number">
