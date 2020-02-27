@@ -25,35 +25,35 @@ public class Account {
     @Column
     private String pin;
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    void setPin(String pin) {
+    public void setPin(String pin) {
         this.pin = pin;
     }
 
-    String getPin() {
+    public String getPin() {
         return pin;
     }
 
-    void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    String getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
-    void setBalance(Integer balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 
-    Integer getBalance() { return balance; }
+    public Integer getBalance() { return balance; }
 
     public void withdraw(int amount) {
         balance = balance - amount;
