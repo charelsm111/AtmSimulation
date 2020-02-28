@@ -29,7 +29,7 @@ public class LoginController {
             session.setAttribute("account", loggedInAccount);
             model.addAttribute("account", loggedInAccount);
 
-            return "redirect:/index";
+            return "redirect:/account";
         } else {
 
             return "redirect:/login";
