@@ -14,7 +14,7 @@ public class Transaction {
 
     @Column
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date date = new Date();
 
     @Column
     private int amount;

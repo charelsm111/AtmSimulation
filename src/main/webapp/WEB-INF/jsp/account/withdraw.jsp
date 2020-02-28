@@ -22,7 +22,7 @@
         </div>
         <div class="row justify-content-sm-center top5">
             <div class="col-sm-6 text-center">
-                <a href="#" data-value="50" class="btn btn-secondary btn-lg btn-block withdraw" role="button" aria-disabled="true">$50</a>
+                <a href="#" data-value="50" class="btn btn-primary btn-lg btn-block withdraw" role="button" aria-disabled="true">$50</a>
             </div>
         </div>
         <div class="row justify-content-sm-center top5">
@@ -32,7 +32,7 @@
         </div>
         <div class="row justify-content-sm-center top5">
             <div class="col-sm-6 text-center">
-                <a href="#" id="other-withdraw" class="btn btn-secondary btn-lg btn-block" role="button" aria-disabled="true">Other</a>
+                <a href="/other-withdraw" id="other-withdraw" class="btn btn-secondary btn-lg btn-block" role="button" aria-disabled="true">Other</a>
             </div>
         </div>
         <br />
@@ -55,7 +55,7 @@
                         amount: value,
                     },
                     (data) => {
-                        $(location).attr('href', '/withdraw');
+                        $(location).attr('href', '/account');
                     });
             });
         });

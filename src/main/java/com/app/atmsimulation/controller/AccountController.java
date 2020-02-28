@@ -27,9 +27,9 @@ public class AccountController {
 
         if (baseController.authenticateAccount(session)) {
             return "account/index";
-        } else {
-            return "redirect:/login";
         }
+
+        return "redirect:/login";
     }
 
     @PostMapping("/logout")
@@ -40,9 +40,12 @@ public class AccountController {
     }
 
     @GetMapping("/withdraw")
-    public String withdraw() {
+    public String withdraw(HttpSession session) {
+        if (baseController.authenticateAccount(session)) {
+            return "account/withdraw";
+        }
 
-        return "account/withdraw";
+        return "redirect:/login";
     }
 
     @PostMapping("/withdraw")
@@ -54,5 +57,14 @@ public class AccountController {
         } else {
             return "redirect:/withdraw";
         }
+    }
+
+    @GetMapping("/other-withdraw")
+    public String otherWithdraw(HttpSession session) {
+        if (baseController.authenticateAccount(session)) {
+            return "account/other-withdraw";
+        }
+
+        return "redirect:/login";
     }
 }
