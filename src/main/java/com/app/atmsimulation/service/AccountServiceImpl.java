@@ -16,7 +16,10 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findByAccountNumberAndPin(accountNumber, pin);
     }
 
-    public void withdraw() {};
+    public boolean withdraw(int amount) {
+
+        return false;
+    };
 
     public void transfer(String destinationAccountNumber) {};
 }

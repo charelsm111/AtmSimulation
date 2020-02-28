@@ -6,7 +6,7 @@ public interface AccountService {
 
     public Account login(String accountNumber, String pin);
 
-    public void withdraw();
+    public boolean withdraw(int amount);
 
     public void transfer(String destinationAccountNumber);
 }
