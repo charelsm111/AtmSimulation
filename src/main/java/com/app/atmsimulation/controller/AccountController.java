@@ -1,5 +1,6 @@
 package com.app.atmsimulation.controller;
 
+import com.app.atmsimulation.model.Account;
 import com.app.atmsimulation.model.Withdraw;
 import com.app.atmsimulation.service.AccountService;
 import com.app.atmsimulation.service.WithdrawService;
@@ -49,14 +50,21 @@ public class AccountController {
     }
 
     @PostMapping("/withdraw")
-    public String withdraw(@ModelAttribute Withdraw withdraw) {
+    public String withdraw(@ModelAttribute Withdraw withdraw, HttpSession httpSession) {
+        Account account = (Account) httpSession.getAttribute("account");
+        withdraw.setAccount(account);
         Withdraw newWithdraw = withdrawService.save(withdraw);
 
         if (newWithdraw != null) {
-            return "redirect:/account";
-        } else {
-            return "redirect:/withdraw";
+            account.setBalance(account.getBalance() - withdraw.getAmount());
+            Account newAccount = accountService.save(account);
+
+            if (newAccount != null) {
+                return "redirect:/account";
+            }
         }
+
+        return "redirect:/withdraw";
     }
 
     @GetMapping("/other-withdraw")
