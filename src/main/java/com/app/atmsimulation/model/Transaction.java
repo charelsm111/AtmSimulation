@@ -19,6 +19,9 @@ public class Transaction {
     @Column
     private int amount;
 
+    @ManyToOne
+    private Account account;
+
     public void setDate(Date date) {
         this.date = date;
     }
@@ -33,5 +36,13 @@ public class Transaction {
 
     public int getAmount() {
         return amount;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
  }
