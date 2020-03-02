@@ -15,4 +15,9 @@ public class AccountServiceImpl implements AccountService {
         
         return accountRepository.findByAccountNumberAndPin(accountNumber, pin);
     }
+
+    public Account save(Account account) {
+
+        return accountRepository.save(account);
+    }
 }
