@@ -20,12 +20,14 @@ public class Account {
     private String name;
 
     @Column
-    private int balance;
+    private Integer balance;
 
     @Column
     private String pin;
 
-    public Account(String accountNumber, String name, int balance, String pin) {
+    public Account() {}
+
+    public Account(String accountNumber, String name, Integer balance, String pin) {
         this.accountNumber = accountNumber;
         this.name = name;
         this.balance = balance;
@@ -56,11 +58,11 @@ public class Account {
         return accountNumber;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 
-    public int getBalance() { return balance; }
+    public Integer getBalance() { return balance; }
 
     public void withdraw(int amount) {
         balance = balance - amount;
