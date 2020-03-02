@@ -33,7 +33,7 @@ public class AccountRepositoryTest {
         Account newAccount = accountRepository.findByAccountNumber("112233");
         assertEquals("112233", newAccount.getAccountNumber());
         assertEquals("Charel Samuel", newAccount.getName());
-        assertEquals(100, newAccount.getBalance());
+        assertEquals(Integer.valueOf(100), newAccount.getBalance());
         assertEquals("123456", newAccount.getPin());
     }
 
@@ -46,7 +46,7 @@ public class AccountRepositoryTest {
         Account newAccount = accountRepository.findByAccountNumberAndPin("112233", "123456");
         assertEquals("112233", newAccount.getAccountNumber());
         assertEquals("Charel Samuel", newAccount.getName());
-        assertEquals(100, newAccount.getBalance());
+        assertEquals(Integer.valueOf(100), newAccount.getBalance());
         assertEquals("123456", newAccount.getPin());
     }
 
