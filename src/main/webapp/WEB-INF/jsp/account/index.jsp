@@ -20,7 +20,7 @@
                 <a href="/withdraw" class="btn btn-primary btn-lg btn-block" role="button" aria-disabled="true">Withdraw</a>
             </div>
             <div class="col-sm">
-                <a href="#" class="btn btn-secondary btn-lg btn-block" role="button" aria-disabled="true">Fund Transfer</a>
+                <a href="/transfer" class="btn btn-secondary btn-lg btn-block" role="button" aria-disabled="true">Fund Transfer</a>
             </div>
         </div>
 
