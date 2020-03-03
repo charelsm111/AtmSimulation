@@ -4,13 +4,19 @@ import com.app.atmsimulation.model.Account;
 import com.app.atmsimulation.model.Withdraw;
 import com.app.atmsimulation.service.AccountService;
 import com.app.atmsimulation.service.WithdrawService;
+import com.app.atmsimulation.util.WithdrawJsonResponse;
+import com.app.atmsimulation.validation.validator.WithdrawValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class AccountController {
@@ -20,6 +26,9 @@ public class AccountController {
 
     @Autowired
     private WithdrawService withdrawService;
+
+    @Autowired
+    private WithdrawValidator withdrawValidator;
 
     BaseControllerImpl baseController = new BaseControllerImpl();
 
@@ -50,21 +59,27 @@ public class AccountController {
     }
 
     @PostMapping("/withdraw")
-    public String withdraw(@ModelAttribute Withdraw withdraw, HttpSession httpSession) {
+    @ResponseBody
+    public WithdrawJsonResponse withdraw(@ModelAttribute Withdraw withdraw, HttpSession httpSession, BindingResult result) {
         Account account = (Account) httpSession.getAttribute("account");
         withdraw.setAccount(account);
-        Withdraw newWithdraw = withdrawService.save(withdraw);
+        withdrawValidator.validate(withdraw, result);
 
-        if (newWithdraw != null) {
-            account.setBalance(account.getBalance() - withdraw.getAmount());
-            Account newAccount = accountService.save(account);
+        WithdrawJsonResponse response = new WithdrawJsonResponse();
+        if (result.hasErrors()) {
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(fieldError -> fieldError.getCode())
+                    .collect(Collectors.toList());
 
-            if (newAccount != null) {
-                return "redirect:/account";
-            }
+            response.setValid(false);
+            response.setErrorMessages(errors);
+        } else {
+            Withdraw newWithdraw = withdrawService.save(withdraw);
+            response.setValid(true);
         }
 
-        return "redirect:/withdraw";
+        return response;
     }
 
     @GetMapping("/other-withdraw")
