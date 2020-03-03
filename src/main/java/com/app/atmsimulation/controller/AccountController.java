@@ -5,7 +5,7 @@ import com.app.atmsimulation.model.Withdraw;
 import com.app.atmsimulation.service.AccountService;
 import com.app.atmsimulation.service.WithdrawService;
 import com.app.atmsimulation.util.WithdrawJsonResponse;
-import com.app.atmsimulation.validation.validator.WithdrawValidator;
+import com.app.atmsimulation.validator.WithdrawValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
