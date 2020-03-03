@@ -4,18 +4,18 @@ import com.app.atmsimulation.model.Account;
 import com.app.atmsimulation.model.Withdraw;
 import com.app.atmsimulation.repository.WithdrawRepository;
 import com.app.atmsimulation.repository.AccountRepository;
+import com.app.atmsimulation.validator.WithdrawValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Optional;
+import org.springframework.validation.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -49,5 +49,21 @@ public class WithdrawRepositoryTest {
 
         Account account = accountRepository.findByAccountNumber("112233");
         assertEquals(Integer.valueOf(50), account.getBalance());
+    }
+
+    @Test
+    public void testSaveWithInsufficientBalance() {
+        AccountRepository accountRepository = mock(AccountRepository.class);
+        when(accountRepository.findByAccountNumber("112233")).thenReturn(new Account("112233", "Charel", 100, "123456"));
+
+        Account newAccount = accountRepository.findByAccountNumber("112233");
+        assertEquals("112233", newAccount.getAccountNumber());
+
+        Withdraw newWithdraw = new Withdraw(150, newAccount);
+        Errors errors = new BeanPropertyBindingResult(newWithdraw, "Insufficient Balance");
+        WithdrawValidator withdrawValidator = new WithdrawValidator();
+        withdrawValidator.validate(newWithdraw, errors);
+
+        assertTrue(errors.hasErrors());
     }
 }
