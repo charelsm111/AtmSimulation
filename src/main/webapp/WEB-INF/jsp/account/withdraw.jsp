@@ -14,6 +14,12 @@
                 <h1>Withdraw</h1>
             </div>
         </div>
+        <div class="row top5">
+            <div class="col-sm text-center">
+                <form:errors path = "*" cssClass = "errorblock" element = "div" />
+            </div>
+        </div>
+
         <br />
         <div class="row justify-content-sm-center">
             <div class="col-sm-6 text-center">
@@ -55,7 +61,14 @@
                         amount: value,
                     },
                     (data) => {
-                        $(location).attr('href', '/account');
+                        if(data.valid){
+                            $(location).attr('href', '/account');
+                            alert("Success");
+                        }else{
+                            $.each(data.errorMessages, function(key, value) {
+                                alert(value);
+                            });
+                        }
                     });
             });
         });
