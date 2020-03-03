@@ -4,7 +4,7 @@ import com.app.atmsimulation.model.Account;
 import com.app.atmsimulation.model.Withdraw;
 import com.app.atmsimulation.repository.WithdrawRepository;
 import com.app.atmsimulation.repository.AccountRepository;
-import com.app.atmsimulation.validator.WithdrawValidator;
+import com.app.atmsimulation.validator.BalanceValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +61,8 @@ public class WithdrawRepositoryTest {
 
         Withdraw newWithdraw = new Withdraw(150, newAccount);
         Errors errors = new BeanPropertyBindingResult(newWithdraw, "Insufficient Balance");
-        WithdrawValidator withdrawValidator = new WithdrawValidator();
-        withdrawValidator.validate(newWithdraw, errors);
+        BalanceValidator balanceValidator = new BalanceValidator();
+        balanceValidator.validate(newWithdraw, errors);
 
         assertTrue(errors.hasErrors());
     }
