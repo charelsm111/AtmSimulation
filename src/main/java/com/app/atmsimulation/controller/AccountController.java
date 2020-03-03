@@ -1,11 +1,14 @@
 package com.app.atmsimulation.controller;
 
 import com.app.atmsimulation.model.Account;
+import com.app.atmsimulation.model.Transfer;
 import com.app.atmsimulation.model.Withdraw;
-import com.app.atmsimulation.service.AccountService;
+import com.app.atmsimulation.service.TransferService;
 import com.app.atmsimulation.service.WithdrawService;
+import com.app.atmsimulation.util.TransferJsonResponse;
 import com.app.atmsimulation.util.WithdrawJsonResponse;
-import com.app.atmsimulation.validator.WithdrawValidator;
+import com.app.atmsimulation.validator.AccountExistenceValidator;
+import com.app.atmsimulation.validator.BalanceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,13 +25,16 @@ import java.util.stream.Collectors;
 public class AccountController {
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private WithdrawService withdrawService;
 
     @Autowired
-    private WithdrawValidator withdrawValidator;
+    private TransferService transferService;
+
+    @Autowired
+    private AccountExistenceValidator accountExistenceValidator;
+
+    @Autowired
+    private BalanceValidator balanceValidator;
 
     BaseControllerImpl baseController = new BaseControllerImpl();
 
@@ -63,7 +69,7 @@ public class AccountController {
     public WithdrawJsonResponse withdraw(@ModelAttribute Withdraw withdraw, HttpSession httpSession, BindingResult result) {
         Account account = (Account) httpSession.getAttribute("account");
         withdraw.setAccount(account);
-        withdrawValidator.validate(withdraw, result);
+        balanceValidator.validate(withdraw, result);
 
         WithdrawJsonResponse response = new WithdrawJsonResponse();
         if (result.hasErrors()) {
@@ -75,7 +81,7 @@ public class AccountController {
             response.setValid(false);
             response.setErrorMessages(errors);
         } else {
-            Withdraw newWithdraw = withdrawService.save(withdraw);
+            withdrawService.save(withdraw);
             response.setValid(true);
         }
 
@@ -89,5 +95,60 @@ public class AccountController {
         }
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/transfer")
+    public String transfer(HttpSession session) {
+        if (baseController.authenticateAccount(session)) {
+            return "account/transfer";
+        }
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/check")
+    @ResponseBody
+    public TransferJsonResponse check(@ModelAttribute Transfer transfer, HttpSession httpSession, BindingResult result) {
+        accountExistenceValidator.validate(transfer, result);
+
+        TransferJsonResponse response = new TransferJsonResponse();
+        if (result.hasErrors()) {
+            response.setValid(false);
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(fieldError -> fieldError.getCode())
+                    .collect(Collectors.toList());
+
+            response.setErrorMessages(errors);
+        } else {
+            response.setValid(true);
+            response.setTransfer(transfer);
+        }
+
+        return response;
+    }
+
+    @PostMapping("/transfer")
+    @ResponseBody
+    public TransferJsonResponse transfer(@ModelAttribute Transfer transfer, HttpSession httpSession, BindingResult result) {
+        Account account = (Account) httpSession.getAttribute("account");
+        transfer.setAccount(account);
+        balanceValidator.validate(transfer, result);
+
+        TransferJsonResponse response = new TransferJsonResponse();
+        if (result.hasErrors()) {
+            response.setValid(false);
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(fieldError -> fieldError.getCode())
+                    .collect(Collectors.toList());
+
+            response.setErrorMessages(errors);
+        } else {
+            transferService.save(transfer);
+            response.setValid(true);
+        }
+
+        return response;
     }
 }
