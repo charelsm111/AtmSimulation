@@ -15,7 +15,7 @@
             </div>
         </div>
         <br />
-        <form action="/withdraw" method="post">
+        <form id="form-other-withdraw" action="/withdraw" method="post">
             <div class="row justify-content-sm-center">
                 <div class="col-sm-6 text-center">
                     <div class="form-group">
@@ -31,5 +31,31 @@
             </div>
         </form>
     </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('#form-other-withdraw').submit((e) => {
+                var value = $('#amount').val();
+
+                $.post("/withdraw",
+                    {
+                        amount: value,
+                    },
+                    (data) => {
+                        if(data.valid){
+                            $(location).attr('href', '/account');
+                            alert("Success");
+                        }else{
+                            $.each(data.errorMessages, function(key, value) {
+                                alert(value);
+                            });
+                        }
+                    });
+                
+                e.preventDefault();
+            })
+        })
+    </script>
 </body>
 </html>
