@@ -18,11 +18,15 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public Transfer save(Transfer transfer) {
+        // Decrease the balance of Sender Account
         Account account = transfer.getAccount();
-        Integer balance = account.getBalance() - transfer.getAmount();
-
-        account.setBalance(balance);
+        account.setBalance(account.getBalance() - transfer.getAmount());
         accountRepository.save(account);
+
+        // Increase the balance of Destination Account
+        Account destinationAccount = accountRepository.findByAccountNumber(transfer.getDestinationAccountNumber());
+        destinationAccount.setBalance(destinationAccount.getBalance() + transfer.getAmount());
+        accountRepository.save(destinationAccount);
 
         return transferRepository.save(transfer);
     }
