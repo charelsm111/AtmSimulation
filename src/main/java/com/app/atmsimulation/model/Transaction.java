@@ -19,8 +19,18 @@ public class Transaction {
     @Column
     private int amount;
 
+    @Column
+    private String destinationAccountNumber;
+
     @ManyToOne
     private Account account;
+
+    public Transaction() {}
+
+    public Transaction(int amount, Account account, String destinationAccountNumber) {
+        this.setAmount(amount);
+        this.setAccount(account);
+    }
 
     public void setDate(Date date) {
         this.date = date;
@@ -45,4 +55,20 @@ public class Transaction {
     public void setAccount(Account account) {
         this.account = account;
     }
+
+    @Column(name="type", insertable = false, updatable = false)
+    protected String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setDestinationAccountNumber(String destinationAccountNumber) {
+        this.destinationAccountNumber = destinationAccountNumber;
+    }
+
+    public String getDestinationAccountNumber() {
+        return destinationAccountNumber;
+    }
+
  }
