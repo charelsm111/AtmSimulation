@@ -1,8 +1,10 @@
 package com.app.atmsimulation.controller;
 
 import com.app.atmsimulation.model.Account;
+import com.app.atmsimulation.model.Transaction;
 import com.app.atmsimulation.model.Transfer;
 import com.app.atmsimulation.model.Withdraw;
+import com.app.atmsimulation.service.TransactionService;
 import com.app.atmsimulation.service.TransferService;
 import com.app.atmsimulation.service.WithdrawService;
 import com.app.atmsimulation.util.TransferJsonResponse;
@@ -11,11 +13,9 @@ import com.app.atmsimulation.validator.AccountExistenceValidator;
 import com.app.atmsimulation.validator.BalanceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -29,6 +29,9 @@ public class AccountController {
 
     @Autowired
     private TransferService transferService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     @Autowired
     private AccountExistenceValidator accountExistenceValidator;
@@ -150,5 +153,18 @@ public class AccountController {
         }
 
         return response;
+    }
+
+    @GetMapping("/history")
+    public String history(@RequestParam(defaultValue = "10") Integer transaction, HttpSession httpSession, ModelMap model) {
+
+        if (baseController.authenticateAccount(httpSession)) {
+            List<Transaction> transactions = transactionService.findLastTransaction(transaction);
+            model.put("transactions", transactions);
+
+            return "account/history";
+        }
+
+        return "redirect:/login";
     }
 }
