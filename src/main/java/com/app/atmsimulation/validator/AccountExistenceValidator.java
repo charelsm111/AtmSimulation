@@ -2,7 +2,6 @@ package com.app.atmsimulation.validator;
 
 import com.app.atmsimulation.model.Account;
 import com.app.atmsimulation.model.Transfer;
-import com.app.atmsimulation.model.Withdraw;
 import com.app.atmsimulation.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
