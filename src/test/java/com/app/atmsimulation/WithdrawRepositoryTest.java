@@ -22,9 +22,6 @@ import static org.mockito.Mockito.*;
 public class WithdrawRepositoryTest {
 
     @Autowired
-    private TestEntityManager entityManager;
-
-    @Autowired
     private WithdrawRepository withdrawRepository;
 
     @Autowired
