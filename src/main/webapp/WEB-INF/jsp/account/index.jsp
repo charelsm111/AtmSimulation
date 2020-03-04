@@ -26,7 +26,7 @@
 
         <div class="row top5">
             <div class="col-sm">
-                <a href="#" class="btn btn-success btn-lg btn-block" role="button" aria-disabled="true">History</a>
+                <a href="/history" class="btn btn-success btn-lg btn-block" role="button" aria-disabled="true">History</a>
             </div>
             <div class="col-sm">
                 <a href="#" id="logout" class="btn btn-danger btn-lg btn-block" role="button" aria-disabled="true">Logout</a>
