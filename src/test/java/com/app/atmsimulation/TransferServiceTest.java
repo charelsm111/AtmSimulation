@@ -6,12 +6,16 @@ import com.app.atmsimulation.model.Transfer;
 import com.app.atmsimulation.repository.AccountRepository;
 import com.app.atmsimulation.repository.TransferRepository;
 import com.app.atmsimulation.service.TransferServiceImpl;
+import com.app.atmsimulation.validator.AccountExistenceValidator;
+import com.app.atmsimulation.validator.BalanceValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -28,6 +32,12 @@ public class TransferServiceTest {
 
     @InjectMocks
     TransferServiceImpl transferService;
+
+    @InjectMocks
+    AccountExistenceValidator accountExistenceValidator;
+
+    @InjectMocks
+    BalanceValidator balanceValidator;
 
     @Test
     public void testTransfer() {
@@ -47,5 +57,37 @@ public class TransferServiceTest {
         assertEquals(created.getDestinationAccountNumber(), transfer.getDestinationAccountNumber());
         assertEquals(Integer.valueOf(90), transfer.getAccount().getBalance());
         assertEquals(Integer.valueOf(210), destinationAccount.getBalance());
+    }
+
+    @Test
+    public void testEnoughBalanceToTransfer() {
+        when(accountRepository.findByAccountNumber("112233")).thenReturn(new Account("112233", "Charel Samuel", 100, "123456"));
+
+        Account account = accountRepository.findByAccountNumber("112233");
+        Transfer transfer = new Transfer(101, account, "112244");
+
+        Errors errors = new BeanPropertyBindingResult(transfer, "transfer");
+        balanceValidator.validate(transfer, errors);
+
+        assertEquals(true, errors.hasErrors());
+    }
+
+    @Test
+    public void testIfDestinationAccountExist() {
+        when(accountRepository.findByAccountNumber("112244")).thenReturn(new Account("112244", "Jonathan", 200, "123456"));
+
+        Transfer transfer = new Transfer();
+        transfer.setDestinationAccountNumber("112244");
+        Errors errors = new BeanPropertyBindingResult(transfer, "transfer");
+        accountExistenceValidator.validate(transfer, errors);
+        assertEquals(false, errors.hasErrors());
+
+        Transfer transfer2 = new Transfer();
+        transfer.setDestinationAccountNumber("112255");
+        Errors errors2 = new BeanPropertyBindingResult(transfer, "transfer");
+        accountExistenceValidator.validate(transfer2, errors);
+        assertEquals(true, errors.hasErrors());
+
+
     }
 }
