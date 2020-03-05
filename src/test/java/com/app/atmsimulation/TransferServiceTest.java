@@ -8,6 +8,7 @@ import com.app.atmsimulation.repository.TransferRepository;
 import com.app.atmsimulation.service.TransferServiceImpl;
 import com.app.atmsimulation.validator.AccountExistenceValidator;
 import com.app.atmsimulation.validator.BalanceValidator;
+import com.app.atmsimulation.validator.TransferValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,6 +18,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -34,10 +41,7 @@ public class TransferServiceTest {
     TransferServiceImpl transferService;
 
     @InjectMocks
-    AccountExistenceValidator accountExistenceValidator;
-
-    @InjectMocks
-    BalanceValidator balanceValidator;
+    TransferValidator transferValidator;
 
     @Test
     public void testTransfer() {
@@ -47,11 +51,9 @@ public class TransferServiceTest {
         Transfer transfer = new Transfer(10, account, "112244");
 
         when(transferRepository.save(transfer)).thenReturn(transfer);
-        when(accountRepository.save(account)).thenReturn(new Account("112233", "Charel Samuel", 90, "123456"));
         when(accountRepository.findByAccountNumber("112244")).thenReturn(new Account("112244", "Jonathan", 200, "123456"));
 
         Account destinationAccount = accountRepository.findByAccountNumber("112244");
-
         Transfer created = transferService.save(transfer);
 
         assertEquals(created.getDestinationAccountNumber(), transfer.getDestinationAccountNumber());
@@ -67,27 +69,39 @@ public class TransferServiceTest {
         Transfer transfer = new Transfer(101, account, "112244");
 
         Errors errors = new BeanPropertyBindingResult(transfer, "transfer");
-        balanceValidator.validate(transfer, errors);
+        transferValidator.validate(transfer, errors);
 
-        assertEquals(true, errors.hasErrors());
+        List<String> errorList = errors.getFieldErrors().stream()
+                .map(fieldError -> fieldError.getCode())
+                .collect(Collectors.toList());
+
+        assertThat(errorList, hasItem("withdrawAmount.insufficientBalance"));
     }
 
     @Test
     public void testIfDestinationAccountExist() {
+        when(accountRepository.findByAccountNumber("112233")).thenReturn(new Account("112233", "Charel", 100, "123456"));
         when(accountRepository.findByAccountNumber("112244")).thenReturn(new Account("112244", "Jonathan", 200, "123456"));
 
-        Transfer transfer = new Transfer();
-        transfer.setDestinationAccountNumber("112244");
+
+        Account account = accountRepository.findByAccountNumber("112233");
+        Transfer transfer = new Transfer(101, account, "112244");
+
         Errors errors = new BeanPropertyBindingResult(transfer, "transfer");
-        accountExistenceValidator.validate(transfer, errors);
-        assertEquals(false, errors.hasErrors());
+        transferValidator.validate(transfer, errors);
+        List<String> errorList = errors.getFieldErrors().stream()
+                .map(fieldError -> fieldError.getDefaultMessage())
+                .collect(Collectors.toList());
 
-        Transfer transfer2 = new Transfer();
-        transfer.setDestinationAccountNumber("112255");
+        assertThat(errorList, not(hasItem("destinationAccountNumber.notFound")));
+
+        Transfer transfer1 = new Transfer(101, account, "112255");
         Errors errors2 = new BeanPropertyBindingResult(transfer, "transfer");
-        accountExistenceValidator.validate(transfer2, errors);
-        assertEquals(true, errors.hasErrors());
+        transferValidator.validate(transfer1, errors2);
+        errorList = errors2.getFieldErrors().stream()
+                .map(fieldError -> fieldError.getCode())
+                .collect(Collectors.toList());
 
-
+        assertThat(errorList, hasItem("destinationAccountNumber.notFound"));
     }
 }
