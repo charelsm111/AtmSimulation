@@ -1,24 +1,32 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>Welcome</h1>
-        <form action="/login" method="POST">
+        <form:form action="/login" method="POST" modelAttribute="account">
           <div class="form-group">
             <label for="accountNumber">Account Number</label>
-            <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="Enter account number">
+            <form:input path="accountNumber" class="form-control" id="accountNumber" placeholder="Enter account number" />
+            <small><form:errors path="accountNumber" cssClass="errormsg" /></small>
           </div>
           <div class="form-group">
             <label for="pin">PIN</label>
-            <input type="password" class="form-control" id="pin" name="pin" placeholder="PIN">
+            <form:password path="pin" class="form-control" id="pin" placeholder="PIN" />
+            <small><form:errors path="pin" cssClass="errormsg" /></small>
           </div>
           <button type="submit" class="btn btn-primary">Sign In</button>
-        </form>
+        </form:form>
     </div>
 </body>
 </html>
