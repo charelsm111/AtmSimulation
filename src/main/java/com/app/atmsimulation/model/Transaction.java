@@ -2,7 +2,8 @@ package com.app.atmsimulation.model;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
+
+import static javax.persistence.CascadeType.MERGE;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -23,7 +24,7 @@ public class Transaction {
     @Column
     private String destinationAccountNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = MERGE)
     private Account account;
 
     public Transaction() {}
