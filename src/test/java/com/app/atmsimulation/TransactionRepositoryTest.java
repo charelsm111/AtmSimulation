@@ -39,21 +39,21 @@ public class TransactionRepositoryTest {
 
     @Test
     public void testGetTransactionInTenLastTransaction() {
-        when(accountRepository.findByAccountNumber("111111")).thenReturn(new Account("11111", "Andi", 1000, "111111"));
+        Account account = new Account("11111", "Andi", 1000, "111111");
 
-        Account account = accountRepository.findByAccountNumber("111111");
-        Transfer transfer1 = new Transfer(45, account, "333333");
-        Withdraw withdraw2 = new Withdraw(10, account);
-        Withdraw withdraw3 = new Withdraw(15, account);
-        Transfer transfer4 = new Transfer(10, account, "222222");
-        Transfer transfer5 = new Transfer(15, account, "333333");
-        Withdraw withdraw6 = new Withdraw(20, account);
-        Withdraw withdraw7 = new Withdraw(25, account);
-        Transfer transfer8 = new Transfer(30, account, "222222");
-        Transfer transfer9 = new Transfer(35, account, "333333");
-        Transfer transfer10 = new Transfer(40, account, "222222");
-        Transfer transfer11 = new Transfer(45, account, "333333");
-        Transfer transfer12 = new Transfer(45, account, "333333");
+        Account savedAccount = accountRepository.save(account);
+        Transfer transfer1 = new Transfer(45, savedAccount, "333334");
+        Withdraw withdraw2 = new Withdraw(10, savedAccount);
+        Withdraw withdraw3 = new Withdraw(15, savedAccount);
+        Transfer transfer4 = new Transfer(10, savedAccount, "222222");
+        Transfer transfer5 = new Transfer(15, savedAccount, "333333");
+        Withdraw withdraw6 = new Withdraw(20, savedAccount);
+        Withdraw withdraw7 = new Withdraw(25, savedAccount);
+        Transfer transfer8 = new Transfer(30, savedAccount, "222222");
+        Transfer transfer9 = new Transfer(35, savedAccount, "333333");
+        Transfer transfer10 = new Transfer(40, savedAccount, "222222");
+        Transfer transfer11 = new Transfer(45, savedAccount, "333333");
+        Transfer transfer12 = new Transfer(45, savedAccount, "333333");
         Transfer savedTransfer1 = transferRepository.save(transfer1);
         Withdraw savedWithdraw2 = withdrawRepository.save(withdraw2);
         Withdraw savedWithdraw3 = withdrawRepository.save(withdraw3);
