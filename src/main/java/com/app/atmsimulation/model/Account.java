@@ -1,10 +1,7 @@
 package com.app.atmsimulation.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Column;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -24,6 +21,9 @@ public class Account {
 
     @Column
     private String pin;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Transaction> transactionList;
 
     public Account() {}
 
@@ -67,4 +67,13 @@ public class Account {
     public void withdraw(int amount) {
         balance = balance - amount;
     }
+
+    public void setTransactionList(List<Transaction> transactionList) {
+        this.transactionList = transactionList;
+    }
+
+    public List<Transaction> getTransactionList() {
+        return this.transactionList;
+    }
+
 }
