@@ -2,6 +2,7 @@ package com.app.atmsimulation.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -22,14 +23,14 @@ public class Transaction {
     @Column
     private String destinationAccountNumber;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Account account;
 
     public Transaction() {}
 
-    public Transaction(int amount, Account account, String destinationAccountNumber) {
-        this.setAmount(amount);
-        this.setAccount(account);
+    public Transaction(int amount, Account account) {
+        this.amount = amount;
+        this.account = account;
     }
 
     public void setDate(Date date) {
@@ -70,5 +71,4 @@ public class Transaction {
     public String getDestinationAccountNumber() {
         return destinationAccountNumber;
     }
-
  }
