@@ -8,16 +8,18 @@ import com.app.atmsimulation.service.TransactionService;
 import com.app.atmsimulation.service.TransferService;
 import com.app.atmsimulation.service.WithdrawService;
 import com.app.atmsimulation.util.TransferJsonResponse;
-import com.app.atmsimulation.util.WithdrawJsonResponse;
 import com.app.atmsimulation.validator.AccountExistenceValidator;
 import com.app.atmsimulation.validator.BalanceValidator;
+import com.app.atmsimulation.validator.WithdrawValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,9 @@ public class AccountController {
 
     @Autowired
     private BalanceValidator balanceValidator;
+
+    @Autowired
+    private WithdrawValidator withdrawValidator;
 
     BaseControllerImpl baseController = new BaseControllerImpl();
 
@@ -68,32 +73,26 @@ public class AccountController {
     }
 
     @PostMapping("/withdraw")
-    @ResponseBody
-    public WithdrawJsonResponse withdraw(@ModelAttribute Withdraw withdraw, HttpSession httpSession, BindingResult result) {
+    public String withdraw(@ModelAttribute("withdraw") @Valid Withdraw withdraw, BindingResult result, HttpSession httpSession) {
         Account account = (Account) httpSession.getAttribute("account");
         withdraw.setAccount(account);
-        balanceValidator.validate(withdraw, result);
+        withdrawValidator.validate(withdraw, result);
 
-        WithdrawJsonResponse response = new WithdrawJsonResponse();
         if (result.hasErrors()) {
-            List<String> errors = result.getFieldErrors()
-                    .stream()
-                    .map(fieldError -> fieldError.getCode())
-                    .collect(Collectors.toList());
 
-            response.setValid(false);
-            response.setErrorMessages(errors);
-        } else {
-            withdrawService.save(withdraw);
-            response.setValid(true);
+            return "account/other-withdraw";
         }
 
-        return response;
+        withdrawService.save(withdraw);
+
+        return "redirect:/account";
     }
 
     @GetMapping("/other-withdraw")
-    public String otherWithdraw(HttpSession session) {
+    public String otherWithdraw(Model model, HttpSession session) {
         if (baseController.authenticateAccount(session)) {
+
+            model.addAttribute("withdraw", new Withdraw());
             return "account/other-withdraw";
         }
 
