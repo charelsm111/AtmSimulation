@@ -7,9 +7,6 @@ import com.app.atmsimulation.model.Withdraw;
 import com.app.atmsimulation.service.TransactionService;
 import com.app.atmsimulation.service.TransferService;
 import com.app.atmsimulation.service.WithdrawService;
-import com.app.atmsimulation.util.TransferJsonResponse;
-import com.app.atmsimulation.validator.AccountExistenceValidator;
-import com.app.atmsimulation.validator.BalanceValidator;
 import com.app.atmsimulation.validator.TransferValidator;
 import com.app.atmsimulation.validator.WithdrawValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class AccountController {
@@ -35,7 +31,7 @@ public class AccountController {
 
     @Autowired
     private TransactionService transactionService;
-    
+
     @Autowired
     private WithdrawValidator withdrawValidator;
 
