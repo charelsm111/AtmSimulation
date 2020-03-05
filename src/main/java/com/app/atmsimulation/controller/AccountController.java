@@ -10,6 +10,7 @@ import com.app.atmsimulation.service.WithdrawService;
 import com.app.atmsimulation.util.TransferJsonResponse;
 import com.app.atmsimulation.validator.AccountExistenceValidator;
 import com.app.atmsimulation.validator.BalanceValidator;
+import com.app.atmsimulation.validator.TransferValidator;
 import com.app.atmsimulation.validator.WithdrawValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,15 +35,12 @@ public class AccountController {
 
     @Autowired
     private TransactionService transactionService;
-
-    @Autowired
-    private AccountExistenceValidator accountExistenceValidator;
-
-    @Autowired
-    private BalanceValidator balanceValidator;
-
+    
     @Autowired
     private WithdrawValidator withdrawValidator;
+
+    @Autowired
+    private TransferValidator transferValidator;
 
     BaseControllerImpl baseController = new BaseControllerImpl();
 
@@ -100,58 +98,30 @@ public class AccountController {
     }
 
     @GetMapping("/transfer")
-    public String transfer(HttpSession session) {
+    public String transfer(Model model, HttpSession session) {
         if (baseController.authenticateAccount(session)) {
+
+            model.addAttribute("transfer", new Transfer());
             return "account/transfer";
         }
 
         return "redirect:/login";
     }
 
-    @PostMapping("/check")
-    @ResponseBody
-    public TransferJsonResponse check(@ModelAttribute Transfer transfer, HttpSession httpSession, BindingResult result) {
-        accountExistenceValidator.validate(transfer, result);
-
-        TransferJsonResponse response = new TransferJsonResponse();
-        if (result.hasErrors()) {
-            response.setValid(false);
-            List<String> errors = result.getFieldErrors()
-                    .stream()
-                    .map(fieldError -> fieldError.getCode())
-                    .collect(Collectors.toList());
-
-            response.setErrorMessages(errors);
-        } else {
-            response.setValid(true);
-            response.setTransfer(transfer);
-        }
-
-        return response;
-    }
-
     @PostMapping("/transfer")
-    @ResponseBody
-    public TransferJsonResponse transfer(@ModelAttribute Transfer transfer, HttpSession httpSession, BindingResult result) {
+    public String transfer(@ModelAttribute("transfer") @Valid Transfer transfer, BindingResult result, HttpSession httpSession) {
         Account account = (Account) httpSession.getAttribute("account");
         transfer.setAccount(account);
-        balanceValidator.validate(transfer, result);
+        transferValidator.validate(transfer, result);
 
-        TransferJsonResponse response = new TransferJsonResponse();
         if (result.hasErrors()) {
-            response.setValid(false);
-            List<String> errors = result.getFieldErrors()
-                    .stream()
-                    .map(fieldError -> fieldError.getCode())
-                    .collect(Collectors.toList());
 
-            response.setErrorMessages(errors);
-        } else {
-            transferService.save(transfer);
-            response.setValid(true);
+            return "account/transfer";
         }
 
-        return response;
+        transferService.save(transfer);
+
+        return "redirect:/account";
     }
 
     @GetMapping("/history")
