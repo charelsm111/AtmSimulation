@@ -1,3 +1,8 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,19 +20,13 @@
             </div>
         </div>
         <br />
-        <form id="form-transfer" action="/transfer" method="post">
+        <form:form id="form-transfer" action="/transfer" method="post" modelAttribute="transfer">
             <div class="row justify-content-sm-center">
                 <div class="col-sm-6 text-center">
                     <div class="form-group">
-                        <label for="amount">Destination Account Number</label>
-                        <input type="text" class="form-control" id="destination-account-number" name="destinationAccountNumber" placeholder="Enter destination account number">
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-sm-center top5">
-                <div class="col-sm-6 text-center">
-                    <div class="form-group">
-                        <button id="btn-check" class="btn btn-secondary btn-block">Check Account</button>
+                        <label for="destinationAccountNumber">Destination Account Number</label>
+                        <form:input path="destinationAccountNumber" class="form-control" id="destination-account-number" placeholder="Enter destination account number" />
+                        <small><form:errors path="destinationAccountNumber" cssClass="errormsg" /></small>
                     </div>
                 </div>
             </div>
@@ -35,7 +34,8 @@
                 <div class="col-sm-6 text-center">
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" disabled>
+                        <form:input path="amount" class="form-control" id="amount" placeholder="Enter amount" />
+                        <small><form:errors path="amount" cssClass="errormsg" /></small>
                     </div>
                 </div>
             </div>
@@ -44,52 +44,9 @@
                     <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block withdraw">
                 </div>
             </div>
-        </form>
+        </form:form>
     </div>
 
     <script src="/js/jquery.min.js"></script>
-    <script>
-        $(document).ready(() => {
-            // Check if account is exist
-            $('#btn-check').click((e) => {
-                var destinationAccountNumber = $('#destination-account-number').val();
-
-                $.post("/check",
-                    {destinationAccountNumber: destinationAccountNumber},
-                    (data) => {
-                        if(data.valid){
-                            alert("Account valid");
-                            $('#amount').prop('disabled', false);
-                            $('#amount').focus();
-                        }else{
-                            $.each(data.errorMessages, function(key, value) {
-                                alert(value);
-                            });
-                        }
-                });
-                e.preventDefault();
-            })
-
-            // Submit transfer
-            $('#form-transfer').submit((e) => {
-                var destinationAccountNumber = $('#destination-account-number').val();
-                var amount = $('#amount').val();
-
-                $.post("/transfer",
-                    {amount: amount, destinationAccountNumber: destinationAccountNumber},
-                    (data) => {
-                        if(data.valid){
-                            alert("Success");
-                            $(location).attr('href', '/account');
-                        }else{
-                            $.each(data.errorMessages, function(key, value) {
-                              alert(value);
-                            });
-                        }
-                });
-                e.preventDefault();
-            });
-        })
-    </script>
 </body>
 </html>
