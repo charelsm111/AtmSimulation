@@ -65,7 +65,8 @@ public class AccountController {
     @GetMapping("/withdraw")
     public String withdraw(HttpSession session) {
         if (baseController.authenticateAccount(session)) {
-            return "account/withdraw";
+
+            return "withdraw/withdraw";
         }
 
         return "redirect:/login";
@@ -103,7 +104,7 @@ public class AccountController {
 
         if (result.hasErrors()) {
 
-            return "account/other-withdraw";
+            return "withdraw/other-withdraw";
         }
 
         withdrawService.save(withdraw);
@@ -116,7 +117,7 @@ public class AccountController {
         if (baseController.authenticateAccount(session)) {
 
             model.addAttribute("withdraw", new Withdraw());
-            return "account/other-withdraw";
+            return "withdraw/other-withdraw";
         }
 
         return "redirect:/login";
@@ -127,7 +128,7 @@ public class AccountController {
         if (baseController.authenticateAccount(session)) {
 
             model.addAttribute("transfer", new Transfer());
-            return "account/transfer";
+            return "transfer/transfer";
         }
 
         return "redirect:/login";
@@ -141,7 +142,7 @@ public class AccountController {
 
         if (result.hasErrors()) {
 
-            return "account/transfer";
+            return "transfer/transfer";
         }
 
         transferService.save(transfer);
@@ -158,7 +159,7 @@ public class AccountController {
             List<Transaction> transactions = transactionService.findByDateOrderByIdDesc(transaction);
             model.put("transactions", transactions);
 
-            return "account/history";
+            return "transaction/history";
         }
 
         return "redirect:/login";
