@@ -16,6 +16,7 @@
             </div>
         </div>
         <br />
+        <p><a href="/account" class="btn btn-warning">Back</a></p>
         <form id="form-history" action="/history" method="get">
             <div class="row">
                 <div class="col-sm-4">

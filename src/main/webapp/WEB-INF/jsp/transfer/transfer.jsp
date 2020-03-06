@@ -16,6 +16,7 @@
             </div>
         </div>
         <br />
+        <p><a href="/account" class="btn btn-warning">Back</a></p>
         <form:form id="form-transfer" action="/transfer" method="post" modelAttribute="transfer">
             <div class="row justify-content-sm-center">
                 <div class="col-sm-6 text-center">

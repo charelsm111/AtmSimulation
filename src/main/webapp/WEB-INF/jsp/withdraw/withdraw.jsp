@@ -15,6 +15,8 @@
                 <h1>Withdraw</h1>
             </div>
         </div>
+        <br />
+        <p><a href="/account" class="btn btn-warning">Back</a></p>
         <div class="row top5">
             <div class="col-sm text-center">
                 <form:errors path = "*" cssClass = "errorblock" element = "div" />

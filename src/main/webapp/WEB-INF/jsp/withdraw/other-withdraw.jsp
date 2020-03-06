@@ -16,6 +16,7 @@
             </div>
         </div>
         <br />
+        <p><a href="/account" class="btn btn-warning">Back</a></p>
         <form:form id="form-other-withdraw" action="/other-withdraw" method="post" modelAttribute="withdraw">
             <div class="row justify-content-sm-center">
                 <div class="col-sm-6 text-center">
