@@ -1,5 +1,6 @@
 package com.app.atmsimulation.controller;
 
+import com.app.atmsimulation.model.Account;
 import com.app.atmsimulation.model.Transaction;
 import com.app.atmsimulation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class TransactionController {
                                   LocalDate transaction, HttpSession httpSession, ModelMap model) {
 
         if (baseController.authenticateAccount(httpSession)) {
-            List<Transaction> transactions = transactionService.findByDateOrderByIdDesc(transaction);
+            Account account = (Account) httpSession.getAttribute("account");
+            List<Transaction> transactions = transactionService.findByDateAndAccountIdOrderByIdDesc(transaction, account.getId());
             model.put("transactions", transactions);
 
             return "transaction/history";
