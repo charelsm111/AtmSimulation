@@ -6,6 +6,7 @@
     <title>Login</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/jquery-ui.css" rel="stylesheet">
 </head>
 
 <body>
@@ -20,7 +21,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="transaction" name="transaction" placeholder="Enter last transaction">
+                        <input type="text" class="form-control" id="transaction" name="transaction" placeholder="Pick a date">
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -28,12 +29,13 @@
                 </div>
             </div>
         </form>
-
+        <hr />
         <table class="table">
           <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Type</th>
+              <th scope="col">Date</th>
               <th scope="col">Amount</th>
               <th scope="col">Destination Account</th>
             </tr>
@@ -44,6 +46,7 @@
             <tr>
               <th scope="row"><%= counter++ %></th>
               <td>${transaction.type}</td>
+              <td>${transaction.date}</td>
               <td>${transaction.amount}</td>
               <td>${transaction.destinationAccountNumber}</td>
             </tr>
@@ -52,5 +55,13 @@
     </div>
 
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $(() => {
+                $("#transaction").datepicker({ dateFormat: 'yy-mm-dd' });
+            });
+        });
+      </script>
 </body>
 </html>
