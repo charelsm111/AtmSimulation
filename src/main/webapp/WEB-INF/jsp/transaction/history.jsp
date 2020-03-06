@@ -1,12 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="../partial/taglib.jsp" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/main.css" rel="stylesheet">
-    <link href="/css/jquery-ui.css" rel="stylesheet">
+    <%@ include file="../partial/header.jsp" %>
 </head>
 
 <body>
@@ -54,7 +53,7 @@
         </table>
     </div>
 
-    <script src="/js/jquery.min.js"></script>
+    <%@ include file="../partial/footer.jsp" %>
     <script src="/js/jquery-ui.min.js"></script>
     <script>
         $(document).ready(() => {

@@ -1,15 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ include file="../partial/taglib.jsp" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/main.css" rel="stylesheet">
+    <title>Other Withdraw</title>
+    <%@ include file="../partial/header.jsp" %>
 </head>
 
 <body>
@@ -38,6 +34,6 @@
         </form:form>
     </div>
 
-    <script src="/js/jquery.min.js"></script>
+    <%@ include file="../partial/footer.jsp" %>
 </body>
 </html>
