@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@TestPropertySource(properties = {"spring.datasource.data=test-data.sql"})
 public class AccountRepositoryTest {
 
     @Autowired
@@ -53,7 +55,7 @@ public class AccountRepositoryTest {
         accountRepository.save(account2);
 
         List<Account> accounts = accountRepository.findAll();
-        assertEquals(2, accounts.size());
+        assertEquals(3, accounts.size()); // 1 from test-data.sql
         assertTrue(accounts.stream().anyMatch(account -> "112233".equals(account.getAccountNumber())));
     }
 }

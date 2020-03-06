@@ -10,9 +10,9 @@ import com.app.atmsimulation.repository.TransferRepository;
 import com.app.atmsimulation.repository.WithdrawRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -21,16 +21,16 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@TestPropertySource(properties = {"spring.datasource.data=test-data.sql"})
 public class TransactionRepositoryTest {
 
     @Autowired
     private TransactionRepository transactionRepository;
 
-    @Mock
+    @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
@@ -70,7 +70,7 @@ public class TransactionRepositoryTest {
         Transfer savedTransfer11 = transferRepository.save(transfer11);
         Transfer savedTransfer12 = transferRepository.save(transfer12);
 
-        List<Transaction> lastTransactions = transactionRepository.findByDateOrderByIdDesc(now);
+        List<Transaction> lastTransactions = transactionRepository.findByDateAndAccountIdOrderByIdDesc(now, savedAccount.getId());
 
         List<Transaction> lastTenTransactions = lastTransactions.stream().limit(10).collect(Collectors.toList());
 
