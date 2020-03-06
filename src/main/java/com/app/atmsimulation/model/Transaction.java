@@ -1,7 +1,8 @@
 package com.app.atmsimulation.model;
 
 import javax.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 import static javax.persistence.CascadeType.MERGE;
 
@@ -15,8 +16,7 @@ public class Transaction {
     private Long id;
 
     @Column
-    @Temporal(TemporalType.DATE)
-    private Date date = new Date();
+    private LocalDate date;
 
     @Column
     private int amount;
@@ -34,11 +34,11 @@ public class Transaction {
         this.account = account;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
