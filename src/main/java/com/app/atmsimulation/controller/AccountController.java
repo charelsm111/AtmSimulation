@@ -7,6 +7,7 @@ import com.app.atmsimulation.model.Withdraw;
 import com.app.atmsimulation.service.TransactionService;
 import com.app.atmsimulation.service.TransferService;
 import com.app.atmsimulation.service.WithdrawService;
+import com.app.atmsimulation.util.WithdrawJsonResponse;
 import com.app.atmsimulation.validator.TransferValidator;
 import com.app.atmsimulation.validator.WithdrawValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class AccountController {
@@ -70,7 +72,31 @@ public class AccountController {
     }
 
     @PostMapping("/withdraw")
-    public String withdraw(@ModelAttribute("withdraw") @Valid Withdraw withdraw, BindingResult result, HttpSession httpSession) {
+    @ResponseBody
+    public WithdrawJsonResponse withdraw(@ModelAttribute Withdraw withdraw, BindingResult result, HttpSession httpSession) {
+        Account account = (Account) httpSession.getAttribute("account");
+        withdraw.setAccount(account);
+        withdrawValidator.validate(withdraw, result);
+
+        WithdrawJsonResponse response = new WithdrawJsonResponse();
+        if (result.hasErrors()) {
+            List<String> errors = result.getFieldErrors()
+                    .stream()
+                    .map(fieldError -> fieldError.getCode())
+                    .collect(Collectors.toList());
+
+            response.setValid(false);
+            response.setErrorMessages(errors);
+        } else {
+            withdrawService.save(withdraw);
+            response.setValid(true);
+        }
+
+        return response;
+    }
+
+    @PostMapping("/other-withdraw")
+    public String otherWithdraw(@ModelAttribute("withdraw") @Valid Withdraw withdraw, BindingResult result, HttpSession httpSession) {
         Account account = (Account) httpSession.getAttribute("account");
         withdraw.setAccount(account);
         withdrawValidator.validate(withdraw, result);
