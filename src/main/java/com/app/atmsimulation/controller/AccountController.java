@@ -10,6 +10,7 @@ import com.app.atmsimulation.service.WithdrawService;
 import com.app.atmsimulation.validator.TransferValidator;
 import com.app.atmsimulation.validator.WithdrawValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class AccountController {
@@ -121,10 +124,12 @@ public class AccountController {
     }
 
     @GetMapping("/history")
-    public String history(@RequestParam(defaultValue = "10") Integer transaction, HttpSession httpSession, ModelMap model) {
+    public String history(@RequestParam(name = "transaction", required = false)
+                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                  LocalDate transaction, HttpSession httpSession, ModelMap model) {
 
         if (baseController.authenticateAccount(httpSession)) {
-            List<Transaction> transactions = transactionService.findLastTransaction(transaction);
+            List<Transaction> transactions = transactionService.findByDate(transaction);
             model.put("transactions", transactions);
 
             return "account/history";
