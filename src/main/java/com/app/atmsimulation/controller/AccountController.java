@@ -155,7 +155,7 @@ public class AccountController {
                                   LocalDate transaction, HttpSession httpSession, ModelMap model) {
 
         if (baseController.authenticateAccount(httpSession)) {
-            List<Transaction> transactions = transactionService.findByDate(transaction);
+            List<Transaction> transactions = transactionService.findByDateOrderByIdDesc(transaction);
             model.put("transactions", transactions);
 
             return "account/history";

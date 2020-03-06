@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -42,18 +44,19 @@ public class TransactionRepositoryTest {
         Account account = new Account("11111", "Andi", 1000, "111111");
 
         Account savedAccount = accountRepository.save(account);
-        Transfer transfer1 = new Transfer(45, savedAccount, "333334");
-        Withdraw withdraw2 = new Withdraw(10, savedAccount);
-        Withdraw withdraw3 = new Withdraw(15, savedAccount);
-        Transfer transfer4 = new Transfer(10, savedAccount, "222222");
-        Transfer transfer5 = new Transfer(15, savedAccount, "333333");
-        Withdraw withdraw6 = new Withdraw(20, savedAccount);
-        Withdraw withdraw7 = new Withdraw(25, savedAccount);
-        Transfer transfer8 = new Transfer(30, savedAccount, "222222");
-        Transfer transfer9 = new Transfer(35, savedAccount, "333333");
-        Transfer transfer10 = new Transfer(40, savedAccount, "222222");
-        Transfer transfer11 = new Transfer(45, savedAccount, "333333");
-        Transfer transfer12 = new Transfer(45, savedAccount, "333333");
+        LocalDate now = LocalDate.now();
+        Transfer transfer1 = new Transfer(45, savedAccount, "333334", now);
+        Withdraw withdraw2 = new Withdraw(10, savedAccount, now);
+        Withdraw withdraw3 = new Withdraw(15, savedAccount, now);
+        Transfer transfer4 = new Transfer(10, savedAccount, "222222", now);
+        Transfer transfer5 = new Transfer(15, savedAccount, "333333", now);
+        Withdraw withdraw6 = new Withdraw(20, savedAccount, now);
+        Withdraw withdraw7 = new Withdraw(25, savedAccount, now);
+        Transfer transfer8 = new Transfer(30, savedAccount, "222222", now);
+        Transfer transfer9 = new Transfer(35, savedAccount, "333333", now);
+        Transfer transfer10 = new Transfer(40, savedAccount, "222222", now);
+        Transfer transfer11 = new Transfer(45, savedAccount, "333333", now);
+        Transfer transfer12 = new Transfer(45, savedAccount, "333333", now);
         Transfer savedTransfer1 = transferRepository.save(transfer1);
         Withdraw savedWithdraw2 = withdrawRepository.save(withdraw2);
         Withdraw savedWithdraw3 = withdrawRepository.save(withdraw3);
@@ -67,10 +70,12 @@ public class TransactionRepositoryTest {
         Transfer savedTransfer11 = transferRepository.save(transfer11);
         Transfer savedTransfer12 = transferRepository.save(transfer12);
 
-        List<Transaction> lastTransactions = transactionRepository.findLastTransaction(10);
+        List<Transaction> lastTransactions = transactionRepository.findByDateOrderByIdDesc(now);
 
-        assertThat(lastTransactions, hasSize(10));
-        assertThat(lastTransactions, hasItem(savedTransfer12));
-        assertThat(lastTransactions, not(hasItem(withdraw2)));
+        List<Transaction> lastTenTransactions = lastTransactions.stream().limit(10).collect(Collectors.toList());
+
+        assertThat(lastTenTransactions, hasSize(10));
+        assertThat(lastTenTransactions, hasItem(savedTransfer12));
+        assertThat(lastTenTransactions, not(hasItem(withdraw2)));
     }
 }
