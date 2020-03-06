@@ -20,7 +20,7 @@
             </div>
         </div>
         <br />
-        <form:form id="form-other-withdraw" action="/withdraw" method="post" modelAttribute="withdraw">
+        <form:form id="form-other-withdraw" action="/other-withdraw" method="post" modelAttribute="withdraw">
             <div class="row justify-content-sm-center">
                 <div class="col-sm-6 text-center">
                     <div class="form-group">
