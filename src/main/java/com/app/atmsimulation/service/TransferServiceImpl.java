@@ -7,6 +7,8 @@ import com.app.atmsimulation.repository.TransferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class TransferServiceImpl implements TransferService {
 
@@ -18,6 +20,7 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public Transfer save(Transfer transfer) {
+        transfer.setDate(LocalDate.now());
         // Decrease the balance of Sender Account
         Account account = transfer.getAccount();
         account.setBalance(account.getBalance() - transfer.getAmount());
