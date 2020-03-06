@@ -15,14 +15,8 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
 
     @Override
-    public List<Transaction> findLastTransaction(Integer amount) {
+    public List<Transaction> findByDateOrderByIdDesc(LocalDate date) {
 
-        return transactionRepository.findLastTransaction(amount);
-    }
-
-    @Override
-    public List<Transaction> findByDate(LocalDate date) {
-
-        return transactionRepository.findByDate(date);
+        return transactionRepository.findByDateOrderByIdDesc(date);
     }
 }

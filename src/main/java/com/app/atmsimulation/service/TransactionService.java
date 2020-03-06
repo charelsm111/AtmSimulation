@@ -9,7 +9,5 @@ import java.util.List;
 @Service
 public interface TransactionService {
 
-    public List<Transaction> findLastTransaction(Integer amount);
-
-    public List<Transaction> findByDate(LocalDate date);
+    public List<Transaction> findByDateOrderByIdDesc(LocalDate date);
 }
