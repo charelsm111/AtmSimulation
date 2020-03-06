@@ -9,5 +9,5 @@ import java.util.List;
 @Service
 public interface TransactionService {
 
-    public List<Transaction> findByDateOrderByIdDesc(LocalDate date);
+    public List<Transaction> findByDateAndAccountIdOrderByIdDesc(LocalDate date, Long accountId);
 }

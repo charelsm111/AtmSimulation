@@ -15,8 +15,8 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
 
     @Override
-    public List<Transaction> findByDateOrderByIdDesc(LocalDate date) {
+    public List<Transaction> findByDateAndAccountIdOrderByIdDesc(LocalDate date, Long accountId) {
 
-        return transactionRepository.findByDateOrderByIdDesc(date);
+        return transactionRepository.findByDateAndAccountIdOrderByIdDesc(date, accountId);
     }
 }
