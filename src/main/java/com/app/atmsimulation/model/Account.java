@@ -34,6 +34,10 @@ public class Account {
         this.pin = pin;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
