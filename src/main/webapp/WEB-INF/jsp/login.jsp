@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>ATM Simulation</title>
     <%@ include file="partial/header.jsp" %>
 </head>
 <body>
