@@ -5,6 +5,7 @@ import com.app.atmsimulation.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -17,5 +18,11 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Transaction> findLastTransaction(Integer amount) {
 
         return transactionRepository.findLastTransaction(amount);
+    }
+
+    @Override
+    public List<Transaction> findByDate(LocalDate date) {
+
+        return transactionRepository.findByDate(date);
     }
 }
