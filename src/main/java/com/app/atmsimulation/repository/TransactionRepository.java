@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findByDateOrderByIdDesc(LocalDate date);
+    List<Transaction> findByDateAndAccountIdOrderByIdDesc(LocalDate date, Long accountId);
 }
