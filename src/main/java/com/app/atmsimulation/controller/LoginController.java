@@ -32,6 +32,7 @@ public class LoginController {
     {
         loginValidator.validate(account, result);
         if (result.hasErrors()) {
+
             return "login";
         }
 
@@ -46,6 +47,12 @@ public class LoginController {
 
             return "redirect:/login";
         }
+    }
 
+    @PostMapping("/logout")
+    public String logout (HttpSession session) {
+        session.removeAttribute("account");
+
+        return "redirect:/login";
     }
 }
