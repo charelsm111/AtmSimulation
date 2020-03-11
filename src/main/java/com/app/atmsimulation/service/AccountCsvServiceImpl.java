@@ -33,38 +33,27 @@ public class AccountCsvServiceImpl implements AccountCsvService {
         }
     }
 
+    @Override
     public List<Account> getAccountList() {
         return accountList;
     }
 
-    public void readFile() {
-        Path path = null;
-        try {
-            path = Paths.get(getClass().getClassLoader().getResource(PATHNAME).toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+    @Override
+    public void removeDuplicateAccountFromCsv(List<String> lines) {
+
+        for (String line: lines) {
+            String[] data = line.split(",");
+
+            Account account = new Account();
+            account.setName(data[0]);
+            account.setPin(data[1]);
+            Integer balance = Integer.parseInt(data[2]);
+            account.setBalance(balance);
+            account.setAccountNumber(data[3]);
+            accountMap.put(account.getAccountNumber(), account);
         }
 
-        try (Stream<String> stream = Files.lines(path)) {
-            List<String> lines = stream.collect(Collectors.toList());
-
-            for (String line: lines) {
-                String[] data = line.split(",");
-
-                Account account = new Account();
-                account.setName(data[0]);
-                account.setPin(data[1]);
-                Integer balance = Integer.parseInt(data[2]);
-                account.setBalance(balance);
-                account.setAccountNumber(data[3]);
-                accountMap.put(account.getAccountNumber(), account);
-            }
-
-            setAccountList();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setAccountList();
     }
 
     @Override
