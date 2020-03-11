@@ -22,6 +22,16 @@ This application is about people who have bank account which can withdraw and tr
  ```
 Your application will run at at port 8080 by default. Access http://localhost:8080 to see the application
 
+## Logging in to application
+1. You can use the default account below:
+
+|Name            |Account Number    |Balance         | PIN 
+|----------------|------------------|----------------| ---------|
+|Charel Samuel   |112233            |$300            |123456
+|Jonathan        |112244            |$300            |123456
+
+Or you can add more accounts by providing `.csv` files with format: `name, account_number, balance, pin` and without the "header".
+
  ## Running the Test
 1. Open terminal and locate the project directory.
 2. Then run `mvn test`
