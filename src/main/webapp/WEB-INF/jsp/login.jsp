@@ -10,6 +10,14 @@
 <body>
     <div class="container">
         <h1>Welcome</h1>
+
+        <div class="row top5">
+            <div class="col-sm text-center">
+                <div class="text-success">${saved}</div>
+                <div class="text-warning">${duplicate}</div>
+            </div>
+        </div>
+
         <form:form action="/login" method="POST" modelAttribute="account">
           <div class="form-group">
             <label for="accountNumber">Account Number</label>
@@ -22,6 +30,7 @@
             <small><form:errors path="pin" cssClass="errormsg" /></small>
           </div>
           <button type="submit" class="btn btn-primary">Sign In</button>
+          <a href="/account/init" class="btn btn-warning">Add more accounts</a>
         </form:form>
     </div>
 
