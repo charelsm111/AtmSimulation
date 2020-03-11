@@ -20,7 +20,7 @@ public class LoginController {
     @Autowired
     private LoginValidator loginValidator;
 
-    @GetMapping({"/", "/login"})
+    @GetMapping("/login")
     public String login(Model model) {
 
         model.addAttribute("account", new Account());
